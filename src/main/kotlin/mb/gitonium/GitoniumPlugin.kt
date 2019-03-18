@@ -2,6 +2,7 @@ package mb.gitonium
 
 import org.eclipse.jgit.errors.RepositoryNotFoundException
 import org.eclipse.jgit.lib.*
+import org.eclipse.jgit.lib.internal.WorkQueue
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.gradle.api.*
 import org.gradle.api.tasks.Input
@@ -114,6 +115,7 @@ class GitoniumPlugin : Plugin<Project> {
     // Close repository after build is finished to free resources.
     project.gradle.buildFinished {
       extension.repo.close()
+      WorkQueue.getExecutor().shutdown() // Shutdown JGit work queue.
     }
   }
 
