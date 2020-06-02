@@ -45,3 +45,7 @@ For example, a tag `release-0.1.3` pointing to the HEAD will result in version `
 
 If no release tag was found, but the HEAD is on a branch, the version will be set to `{branch}-SNAPSHOT`.
 For example, a HEAD on branch `master` will result in version `master-SNAPSHOT`.
+
+If no release tag was found, and the HEAD is not on a branch, the version is not set and therefore defaults to Gradle's default version of `unspecified`.
+
+If the repository has no HEAD, Gitonium will fail.
