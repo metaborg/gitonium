@@ -141,13 +141,11 @@ class GitoniumPlugin : Plugin<Project> {
 }
 
 open class CheckSnapshotDependencies @Inject constructor(private val extension: GitoniumExtension) : DefaultTask() {
-  @Input
-  fun isRelease(): Boolean {
-    return extension.isRelease
-  }
+  @get:Input
+  val isRelease get() = extension.isRelease
 
-  @Input
-  fun snapshotDependencyIds(): List<String> {
+  @get:Input
+  val snapshotDependencyIds get(): List<String> {
     return project.configurations.flatMap { configuration ->
       configuration.allDependencies.mapNotNull { dependency ->
         val version = dependency.version // Assign to local val to enable smart cast.
@@ -162,8 +160,8 @@ open class CheckSnapshotDependencies @Inject constructor(private val extension: 
 
   @TaskAction
   fun check() {
-    if(!isRelease()) return
-    val snapshotDependencies = snapshotDependencyIds()
+    if(!isRelease) return
+    val snapshotDependencies = snapshotDependencyIds
     if(snapshotDependencies.isEmpty()) return
     val sb = StringBuilder()
     sb.append("Project '")
