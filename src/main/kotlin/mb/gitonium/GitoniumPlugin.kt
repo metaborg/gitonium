@@ -1,13 +1,19 @@
 package mb.gitonium
 
 import org.eclipse.jgit.errors.RepositoryNotFoundException
-import org.eclipse.jgit.lib.*
+import org.eclipse.jgit.lib.AnyObjectId
+import org.eclipse.jgit.lib.Constants
+import org.eclipse.jgit.lib.ObjectId
+import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.lib.internal.WorkQueue
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
-import org.gradle.api.*
+import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
-import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.*
 import java.io.IOException
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -15,15 +21,19 @@ import javax.inject.Inject
 @Suppress("unused")
 open class GitoniumExtension(private val project: Project) {
   var tagPattern: Pattern = Pattern.compile(""".*release-(.+)""")
-  var autoSetVersion: Boolean = true
-  var autoSetSubprojectVersions: Boolean = true
+  var setVersion: Boolean = true
+  var setSubprojectVersions: Boolean = true
   var checkSnapshotDependenciesInRelease: Boolean = true
 
 
   val version: String by lazy {
     val branch = run {
-      val headRef = repo.exactRef(Constants.HEAD)
-        ?: throw GradleException("Gitonium cannot set project version; repository has no HEAD")
+      val headRef = try {
+        repo.exactRef(Constants.HEAD)
+          ?: throw GradleException("Gitonium cannot set the version for $project; repository has no HEAD")
+      } catch(e: IOException) {
+        throw GradleException("Gitonium cannot set the version for $project; exception occurred while resolving repository HEAD", e)
+      }
       if(headRef.isSymbolic) {
         Repository.shortenRefName(headRef.target.name)
       } else {
@@ -34,7 +44,10 @@ open class GitoniumExtension(private val project: Project) {
     when {
       releaseTagVersion != null -> releaseTagVersion
       branch != null -> "$branch-SNAPSHOT"
-      else -> throw GradleException("Gitonium cannot set project version; repository HEAD is detached (and does not have a release tag)")
+      else -> {
+        project.logger.info("Gitonium cannot set the version for $project; the repository HEAD does not point to a branch, nor a release tag. Defaulting to '${Project.DEFAULT_VERSION}'")
+        Project.DEFAULT_VERSION
+      }
     }
   }
 
@@ -45,30 +58,30 @@ open class GitoniumExtension(private val project: Project) {
     try {
       FileRepositoryBuilder().readEnvironment().findGitDir(project.rootDir).setMustExist(true).build()
     } catch(e: RepositoryNotFoundException) {
-      throw GradleException("Gitonium cannot set project version; no git repository found at ${project.rootDir}", e)
+      throw GradleException("Gitonium cannot set the version for $project; no git repository found at '${project.rootDir}'", e)
     }
   }
 
   private val releaseTagVersion: String? by lazy {
     val head = try {
-      repo.resolve(Constants.HEAD)
+      repo.exactRef(Constants.HEAD)?.objectId
         ?: throw GradleException("Gitonium cannot set project version; repository has no HEAD")
     } catch(e: IOException) {
-      throw GradleException("Gitonium cannot set project version; exception occurred when resolving repository HEAD", e)
+      throw GradleException("Gitonium cannot set the version for $project; exception occurred while resolving repository HEAD", e)
     }
     releaseTagVersion(repo, head, tagPattern)
   }
 
   private fun releaseTagVersion(repo: Repository, head: ObjectId, tagPattern: Pattern): String? {
     repo.refDatabase.getRefsByPrefix(Constants.R_TAGS).forEach { tagRef ->
-      // Peel the ref if it has not been peeled yet, otherwise peeledObjectId will return null.
-      val finalTagRef = if(tagRef.isPeeled) {
-        tagRef
+      val (finalTagRef, target) = if(tagRef.isPeeled) {
+        Pair(tagRef, tagRef.peeledObjectId ?: tagRef.objectId)
       } else {
-        repo.refDatabase.peel(tagRef)
+        // Peel the ref if it has not been peeled yet, otherwise peeledObjectId will not be set.
+        val peeled = repo.refDatabase.peel(tagRef)
+        Pair(peeled, peeled.peeledObjectId ?: tagRef.objectId)
       }
-      val target = finalTagRef.peeledObjectId
-      if(target != null && AnyObjectId.equals(head, target)) {
+      if(target != null && AnyObjectId.isEqual(head, target)) {
         // Tag names contain 'refs/tags/', which must be removed before matching.
         val name = finalTagRef.name.replace(Constants.R_TAGS, "")
         val matcher = tagPattern.matcher(name)
@@ -87,8 +100,8 @@ open class GitoniumExtension(private val project: Project) {
 class LazyGitoniumVersion(private val extension: GitoniumExtension, private val isSubProject: Boolean) {
   override fun toString(): String {
     return when {
-      extension.autoSetVersion && !isSubProject -> extension.version
-      extension.autoSetSubprojectVersions && isSubProject -> extension.version
+      extension.setVersion && !isSubProject -> extension.version
+      extension.setSubprojectVersions && isSubProject -> extension.version
       else -> Project.DEFAULT_VERSION
     }
   }
