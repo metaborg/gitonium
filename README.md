@@ -1,3 +1,8 @@
+[![GitHub license](https://img.shields.io/github/license/metaborg/gitonium)](https://github.com/metaborg/gitonium/blob/master/LICENSE)
+[![Jenkins](https://img.shields.io/jenkins/build/https/buildfarm.metaborg.org/job/metaborg/job/gitonium/job/master)](https://buildfarm.metaborg.org/job/metaborg/job/gitonium/job/master/lastBuild)
+[![coronium](https://img.shields.io/maven-metadata/v?label=gitonium&metadataUrl=https%3A%2F%2Fartifacts.metaborg.org%2Fcontent%2Frepositories%2Freleases%2Forg%2Fmetaborg%2Fgitonium%2Fmaven-metadata.xml)](https://mvnrepository.com/artifact/org.metaborg/gitonium?repo=metaborg-releases)
+
+
 # Gitonium
 
 Gitonium is a Gradle plugin for automatic versioning based on the current Git branch and/or tag.
@@ -26,7 +31,7 @@ Apply the gitonium plugin to a project (a build.gradle(.kts) file) as follows:
 
 ```kotlin
 plugins {
-  id("org.metaborg.gitonium") version("0.1.3")
+  id("org.metaborg.gitonium") version("0.1.4")
 }
 ```
 
