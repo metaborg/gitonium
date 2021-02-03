@@ -1,4 +1,4 @@
 #!groovy
 @Library('metaborg.jenkins.pipeline@develop') _
 
-gradlePipeline()
+gradlePipeline(slack: true, slackChannel: "#spoofax3-dev")

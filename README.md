@@ -35,6 +35,8 @@ plugins {
 }
 ```
 
+The latest version of the plugin can be found at the top of this readme.
+
 Gitonium will then lazily set the version of the project, and all sub-projects, to a version based on the Git repository.
 To override the version of a project, simply set the version as usual, and this will override the lazily set version.
 
