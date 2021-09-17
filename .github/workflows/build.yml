@@ -5,9 +5,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-18.04, windows-2019, macos-10.15]
-        java: [8]
-        gradle: [5.6.4, 6.8]
+        os: [ubuntu-20.04, windows-2019, macos-10.15, macos-11]
+        java: [8, 11]
+        gradle: [5.6.4, 6.9.1]
         experimental: [false]
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
@@ -19,17 +19,17 @@ jobs:
       - uses: actions/cache@v2
         id: cache-gradle
         with:
-          path: ~/.gradle/caches
-          key: gradle-${{ runner.os }}-${{ matrix.gradle }}-${{ hashFiles('**/*.gradle*') }}
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ matrix.gradle }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             gradle-${{ runner.os }}-
       - uses: eskatos/gradle-command-action@v1
-        id: build
-        with:
-          gradle-version: ${{ matrix.gradle }}
-          arguments: buildAll --parallel --warning-mode all
-      - uses: eskatos/gradle-command-action@v1
-        id: build-with-stacktrace # Separate build with stacktraces on, otherwise warnings give huge stacktraces.
         with:
           gradle-version: ${{ matrix.gradle }}
           arguments: buildAll --parallel --stacktrace
+      - id: print-jvm-crash-logs
+        if: ${{ failure() }}
+        run: cat hs_err_pid*.log; cat **/hs_err_pid*.log; cat replay_pid*.log; cat **/replay_pid*.log; true
+        shell: bash
