@@ -43,7 +43,7 @@ open class GitoniumExtension(private val project: Project) {
     val releaseTagVersion = releaseTagVersion // Assign to local val to enable smart cast.
     when {
       releaseTagVersion != null -> releaseTagVersion
-      branch != null -> "$branch-SNAPSHOT"
+      branch != null -> "999.9.9-$branch-SNAPSHOT"
       else -> {
         project.logger.info("Gitonium cannot set the version for $project; the repository HEAD does not point to a branch, nor a release tag. Defaulting to '${Project.DEFAULT_VERSION}'")
         Project.DEFAULT_VERSION
