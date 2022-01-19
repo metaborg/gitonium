@@ -27,26 +27,32 @@ open class GitoniumExtension(private val project: Project) {
 
 
   val version: String by lazy {
-    val branch = run {
-      val headRef = try {
-        repo.exactRef(Constants.HEAD)
-          ?: throw GradleException("Gitonium cannot set the version for $project; repository has no HEAD")
-      } catch(e: IOException) {
-        throw GradleException("Gitonium cannot set the version for $project; exception occurred while resolving repository HEAD", e)
+    val repo = repo // Assign to local val to enable smart cast.
+    if(repo == null) {
+      project.logger.warn("Gitonium cannot set the version for $project; no Git repository was found. Defaulting to '${Project.DEFAULT_VERSION}")
+      Project.DEFAULT_VERSION
+    } else {
+      val branch = run {
+        val headRef = try {
+          repo.exactRef(Constants.HEAD)
+            ?: throw GradleException("Gitonium cannot set the version for $project; repository has no HEAD")
+        } catch(e: IOException) {
+          throw GradleException("Gitonium cannot set the version for $project; exception occurred while resolving repository HEAD", e)
+        }
+        if(headRef.isSymbolic) {
+          Repository.shortenRefName(headRef.target.name)
+        } else {
+          null
+        }
       }
-      if(headRef.isSymbolic) {
-        Repository.shortenRefName(headRef.target.name)
-      } else {
-        null
-      }
-    }
-    val releaseTagVersion = releaseTagVersion // Assign to local val to enable smart cast.
-    when {
-      releaseTagVersion != null -> releaseTagVersion
-      branch != null -> "999.9.9-$branch-SNAPSHOT"
-      else -> {
-        project.logger.info("Gitonium cannot set the version for $project; the repository HEAD does not point to a branch, nor a release tag. Defaulting to '${Project.DEFAULT_VERSION}'")
-        Project.DEFAULT_VERSION
+      val releaseTagVersion = releaseTagVersion // Assign to local val to enable smart cast.
+      when {
+        releaseTagVersion != null -> releaseTagVersion
+        branch != null -> "999.9.9-$branch-SNAPSHOT"
+        else -> {
+          project.logger.info("Gitonium cannot set the version for $project; the repository HEAD does not point to a branch, nor a release tag. Defaulting to '${Project.DEFAULT_VERSION}'")
+          Project.DEFAULT_VERSION
+        }
       }
     }
   }
@@ -54,22 +60,28 @@ open class GitoniumExtension(private val project: Project) {
   val isRelease: Boolean get() = releaseTagVersion != null
 
 
-  internal val repo: Repository by lazy {
+  internal val repo: Repository? by lazy {
     try {
       FileRepositoryBuilder().readEnvironment().findGitDir(project.rootDir).setMustExist(true).build()
     } catch(e: RepositoryNotFoundException) {
-      throw GradleException("Gitonium cannot set the version for $project; no git repository found at '${project.rootDir}'", e)
+      project.logger.warn("Gitonium cannot find a Git repository for $project", e)
+      null
     }
   }
 
   private val releaseTagVersion: String? by lazy {
-    val head = try {
-      repo.exactRef(Constants.HEAD)?.objectId
-        ?: throw GradleException("Gitonium cannot set project version; repository has no HEAD")
-    } catch(e: IOException) {
-      throw GradleException("Gitonium cannot set the version for $project; exception occurred while resolving repository HEAD", e)
+    val repo = repo // Assign to local val to enable smart cast.
+    if(repo == null) {
+      null
+    } else {
+      val head = try {
+        repo.exactRef(Constants.HEAD)?.objectId
+          ?: throw GradleException("Gitonium cannot set project version; repository has no HEAD")
+      } catch(e: IOException) {
+        throw GradleException("Gitonium cannot set the version for $project; exception occurred while resolving repository HEAD", e)
+      }
+      releaseTagVersion(repo, head, tagPattern)
     }
-    releaseTagVersion(repo, head, tagPattern)
   }
 
   private fun releaseTagVersion(repo: Repository, head: ObjectId, tagPattern: Pattern): String? {
@@ -127,7 +139,7 @@ class GitoniumPlugin : Plugin<Project> {
     }
     // Close repository after build is finished to free resources.
     project.gradle.buildFinished {
-      extension.repo.close()
+      extension.repo?.close()
       WorkQueue.getExecutor().shutdown() // Shutdown JGit work queue.
     }
   }
@@ -142,21 +154,23 @@ class GitoniumPlugin : Plugin<Project> {
 
 open class CheckSnapshotDependencies @Inject constructor(private val extension: GitoniumExtension) : DefaultTask() {
   @get:Input
-  val isRelease get() = extension.isRelease
+  val isRelease
+    get() = extension.isRelease
 
   @get:Input
-  val snapshotDependencyIds get(): List<String> {
-    return project.configurations.flatMap { configuration ->
-      configuration.allDependencies.mapNotNull { dependency ->
-        val version = dependency.version // Assign to local val to enable smart cast.
-        if(version != null && version.endsWith("-SNAPSHOT")) {
-          "${dependency.group}:${dependency.name}:${dependency.version}"
-        } else {
-          null
+  val snapshotDependencyIds
+    get(): List<String> {
+      return project.configurations.flatMap { configuration ->
+        configuration.allDependencies.mapNotNull { dependency ->
+          val version = dependency.version // Assign to local val to enable smart cast.
+          if(version != null && version.endsWith("-SNAPSHOT")) {
+            "${dependency.group}:${dependency.name}:${dependency.version}"
+          } else {
+            null
+          }
         }
-      }
-    }.distinct()
-  }
+      }.distinct()
+    }
 
   @TaskAction
   fun check() {
