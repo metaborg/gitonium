@@ -31,7 +31,7 @@ Apply the gitonium plugin to a project (a build.gradle(.kts) file) as follows:
 
 ```kotlin
 plugins {
-  id("org.metaborg.gitonium") version("0.1.4")
+  id("org.metaborg.gitonium") version("0.1.5")
 }
 ```
 
@@ -50,8 +50,9 @@ In the found Git repository, Gitonium will check if a release tag in the form of
 If so, it will set the version of the project to `{version}`.
 For example, a tag `release-0.1.3` pointing to the HEAD will result in version `0.1.3`.
 
-If no release tag was found, but the HEAD is on a branch, the version will be set to `{branch}-SNAPSHOT`.
-For example, a HEAD on branch `master` will result in version `master-SNAPSHOT`.
+If no release tag was found, but the HEAD is on a branch, the version will be set to `999.9.9-{branch}-SNAPSHOT`.
+The `999.9.9` prefix to the version ensures that [Gradle always orders this version higher than regular release versions](https://docs.gradle.org/current/userguide/single_versions.html#version_ordering), and thus makes it possible to upgrade to it.
+For example, a HEAD on branch `master` will result in version `999.9.9-master-SNAPSHOT`.
 
 If no release tag was found, and the HEAD is not on a branch, the version is not set and therefore defaults to Gradle's default version of `unspecified`.
 
@@ -98,7 +99,7 @@ You should also push the release tag you made such that this release is reproduc
 
 ## Copyright and License
 
-Copyright © 2018-2021 Delft University of Technology
+Copyright © 2018-2022 Delft University of Technology
 
 The files in this repository are licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 You may use the files in this repository in compliance with the license.
