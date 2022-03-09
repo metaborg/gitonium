@@ -5,7 +5,7 @@ All notable changes to this project are documented in this file, based on [Keep 
 ## [Unreleased]
 
 
-## [0.1.5]
+## [0.1.5] - 2022-01-19
 ### Changed
 - `SNAPSHOT` versions are prefixed with `999.9.9-` to ensure that `SNAPSHOT` versions are ordered above non-`SNAPSHOT` versions.
 - `Project.DEFAULT_VERSION` (`"unspecified"`) is assigned as version if no Git repository is found, instead of failing.
