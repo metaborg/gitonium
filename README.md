@@ -1,5 +1,5 @@
 [![GitHub license](https://img.shields.io/github/license/metaborg/gitonium)](https://github.com/metaborg/gitonium/blob/master/LICENSE)
-[![GitHub actions](https://img.shields.io/github/workflow/status/metaborg/gitonium/Build?label=GitHub%20actions)](https://github.com/metaborg/common/actions/workflows/build.yml)
+[![GitHub actions](https://img.shields.io/github/workflow/status/metaborg/gitonium/Build?label=GitHub%20actions)](https://github.com/metaborg/gitonium/actions/workflows/build.yml)
 [![Jenkins](https://img.shields.io/jenkins/build/https/buildfarm.metaborg.org/job/metaborg/job/gitonium/job/master?label=Jenkins)](https://buildfarm.metaborg.org/job/metaborg/job/gitonium/job/master/lastBuild)
 [![coronium](https://img.shields.io/maven-metadata/v?label=gitonium&metadataUrl=https%3A%2F%2Fartifacts.metaborg.org%2Fcontent%2Frepositories%2Freleases%2Forg%2Fmetaborg%2Fgitonium%2Fmaven-metadata.xml)](https://mvnrepository.com/artifact/org.metaborg/gitonium?repo=metaborg-releases)
 
