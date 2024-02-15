@@ -1,7 +1,6 @@
 
 # Gitonium
 [![Build][github-build-badge]][github-build]
-[![Build][jenkins-build-badge]][jenkins-build]
 [![License][license-badge]][license]
 [![Maven Release][maven-release-badge]][maven-release]
 [![GitHub Release][github-release-badge]][github-release]
@@ -70,8 +69,6 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 [github-build-badge]: https://github.com/metaborg/gitonium/actions/workflows/build.yaml/badge.svg
 [github-build]: https://github.com/metaborg/gitonium/actions
-[jenkins-build-badge]: https://img.shields.io/jenkins/build/https/buildfarm.metaborg.org/job/metaborg/job/gitonium/job/master?label=Jenkins
-[jenkins-build]: https://buildfarm.metaborg.org/job/metaborg/job/gitonium/job/master/lastBuild
 [license-badge]: https://img.shields.io/github/license/metaborg/gitonium
 [license]: https://github.com/metaborg/gitonium/blob/main/LICENSE
 [maven-release-badge]: https://img.shields.io/maven-metadata/v?label=maven-release&metadataUrl=https%3A%2F%2Fartifacts.metaborg.org%2Fcontent%2Frepositories%2Freleases%2Forg%2Fmetaborg%2Fgitonium%2Fmaven-metadata.xml
