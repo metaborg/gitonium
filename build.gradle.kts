@@ -8,10 +8,6 @@ plugins {
   `maven-publish`
 }
 
-kotlinDslPluginOptions {
-  experimentalWarning.set(false)
-}
-
 gradlePlugin {
   plugins {
     create("gitonium") {
