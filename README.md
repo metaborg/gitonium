@@ -51,7 +51,7 @@ If the repository has no HEAD, Gitonium will fail.
 ## Building
 This repository is built with Gradle, which requires a JDK of at least version 8 to be installed. Higher versions may work depending on [which version of Gradle is used](https://docs.gradle.org/current/userguide/compatibility.html).
 
-To build this repository, run `./gradlew buildAll` on Linux and macOS, or `gradlew buildAll` on Windows.
+To build this repository, run `./gradlew build` on Linux and macOS, or `gradlew.bat build` on Windows.
 
 ### Automated Builds
 All branches and tags of this repository are built on:
