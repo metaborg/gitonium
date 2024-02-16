@@ -138,10 +138,12 @@ class GitoniumPlugin : Plugin<Project> {
       }
     }
     // Close repository after build is finished to free resources.
+    // DEPRECTAED: See https://github.com/gradle/gradle/issues/20151#issuecomment-1751927564
     project.gradle.buildFinished {
       extension.repo?.close()
       WorkQueue.getExecutor().shutdown() // Shutdown JGit work queue.
     }
+
   }
 
   private fun registerCheckSnapshotDependenciesTask(project: Project, extension: GitoniumExtension) {
