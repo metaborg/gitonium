@@ -14,9 +14,9 @@ jobs:
     name: Build
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         java: [11]
-        gradle: [wrapper, 5.6.4, 6.9.1, 7.6.4, 8.6, current]
+        gradle: [wrapper, 6.9.1, 7.6.4, 8.6, current]
         experimental: [false]
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
