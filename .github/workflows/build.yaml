@@ -16,10 +16,8 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         java: [11]
-        gradle: [wrapper, 6.9.1, 7.6.4]
-        experimental: [false]
+        gradle: ["wrapper", "7.6.4", "8.6", "current"]
     runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.experimental }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,4 +37,4 @@ jobs:
           build-scan-terms-of-service-agree: "yes"
       - name: Build
         run: |
-          gradle buildAll
+          gradle build
