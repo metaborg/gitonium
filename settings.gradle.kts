@@ -1,11 +1,10 @@
-rootProject.name = "gitonium"
-
 pluginManagement {
-  repositories {
-    maven("https://artifacts.metaborg.org/content/groups/public/")
-  }
+    repositories {
+        maven("https://artifacts.metaborg.org/content/groups/public/")
+    }
 }
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
 
-if(org.gradle.util.VersionNumber.parse(gradle.gradleVersion).major < 6) {
-  enableFeaturePreview("GRADLE_METADATA")
 }
+rootProject.name = "gitonium"

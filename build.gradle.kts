@@ -1,22 +1,37 @@
 plugins {
-  id("org.metaborg.gradle.config.root-project") version "0.4.7"
-  id("org.metaborg.gradle.config.java-library") version "0.4.7"
-  id("org.metaborg.gitonium") version "0.1.5" // Bootstrap with previous version.
-  kotlin("jvm") version "1.3.41" // 1.3.41 in sync with kotlin-dsl plugin.
-  `kotlin-dsl`
-  `java-gradle-plugin`
-  `maven-publish`
+    `java-library`
+    alias(libs.plugins.gitonium)        // Bootstrap with previous version.
+    alias(libs.plugins.kotlin.jvm)
+    `kotlin-dsl`
+    `java-gradle-plugin`
+    `maven-publish`
 }
 
-gradlePlugin {
-  plugins {
-    create("gitonium") {
-      id = "org.metaborg.gitonium"
-      implementationClass = "mb.gitonium.GitoniumPlugin"
-    }
-  }
+
+group = "org.metaborg"
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
-  implementation("org.eclipse.jgit:org.eclipse.jgit:5.10.0.202012080955-r")
+    implementation      (libs.jgit)
+    testImplementation  (libs.kotest)
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
+kotlin {
+    jvmToolchain(11)
+}
+
+gradlePlugin {
+    plugins {
+        create("gitonium") {
+            id = "org.metaborg.gitonium"
+            implementationClass = "mb.gitonium.GitoniumPlugin"
+        }
+    }
 }
