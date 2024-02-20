@@ -9,7 +9,7 @@ Gitonium is a Gradle plugin for automatic versioning based on the current Git br
 
 
 ## Requirements
-Gradle 5 or higher is required. The code snippets in this README assume you are using Gradle with Kotlin, but should be translatable to Groovy as well.
+Gradle 6 or higher is required. The code snippets in this README assume you are using Gradle with Kotlin, but should be translatable to Groovy as well.
 
 
 ## Prerequisites
