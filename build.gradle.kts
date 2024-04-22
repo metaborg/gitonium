@@ -1,7 +1,7 @@
 plugins {
     `java-library`
     id("org.metaborg.gitonium") version "0.1.5"   // Bootstrap with previous version. Must match version in libs.versions.toml
-    kotlin("jvm") version "1.7.10"                // Must match version in libs.versions.toml
+    //kotlin("jvm") version "1.7.10"                // Must match version in libs.versions.toml
     `kotlin-dsl`
     `java-gradle-plugin`
     `maven-publish`
@@ -15,8 +15,11 @@ repositories {
 }
 
 dependencies {
-    implementation      ("org.eclipse.jgit:org.eclipse.jgit:5.10.0.202012080955-r")     // Must match version in libs.versions.toml
-    testImplementation  ("io.kotest:kotest-runner-junit5:5.8.0")                        // Must match version in libs.versions.toml
+    implementation      (libs.jgit)
+    testImplementation  (libs.kotest)
+    testImplementation  (libs.kotest.assertions)
+    testImplementation  (libs.kotest.datatest)
+    testImplementation  (libs.kotest.property)
 }
 
 tasks.test {

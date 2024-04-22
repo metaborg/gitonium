@@ -4,7 +4,7 @@
 kotlin                          = "1.7.10"                  # https://kotlinlang.org/
 gitonium                        = "0.1.5"                   # https://github.com/metaborg/gitonium
 jgit                            = "5.10.0.202012080955-r"   # https://www.eclipse.org/jgit/
-kotest                          = "5.8.0"                   # https://kotest.io/
+kotest                          = "5.8.1"                   # https://kotest.io/
 
 
 
@@ -15,3 +15,6 @@ gitonium                        = { id = "org.metaborg.gitonium",               
 [libraries]
 jgit                            = { module = "org.eclipse.jgit:org.eclipse.jgit",                           version.ref = "jgit" }
 kotest                          = { module = "io.kotest:kotest-runner-junit5",                              version.ref = "kotest" }
+kotest-assertions               = { module = "io.kotest:kotest-assertions-core",                            version.ref = "kotest" }
+kotest-datatest                 = { module = "io.kotest:kotest-framework-datatest",                         version.ref = "kotest" }
+kotest-property                 = { module = "io.kotest:kotest-property",                                   version.ref = "kotest" }
