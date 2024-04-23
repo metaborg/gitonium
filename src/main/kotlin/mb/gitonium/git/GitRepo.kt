@@ -61,13 +61,14 @@ interface GitRepo {
      * This is used as the version number.
      *
      * @param patterns The glob patterns to match tags against; or none to match all tags.
+     * @param withHash Whether to include the short commit hash in the name if the tag does not point to the current commit.
      * @return The human-readable name of the last tag on this branch, optionally with a short commit hash suffix
      * if the tag does not point to the current commit. If there is no tag, this just returns the short commit hash.
      * @throws CommandException If the command fails or returns a non-zero exit code.
      * @throws IOException If an I/O error occurs.
      */
     @Throws(IOException::class)
-    fun getTagDescription(vararg patterns: String): String
+    fun getTagDescription(vararg patterns: String, withHash: Boolean = false): String
 
     /**
      * Gets the status of the repository.

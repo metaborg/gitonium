@@ -1,23 +1,23 @@
 package mb.gitonium
 
-import org.eclipse.jgit.errors.RepositoryNotFoundException
-import org.eclipse.jgit.lib.AnyObjectId
-import org.eclipse.jgit.lib.Constants
-import org.eclipse.jgit.lib.ObjectId
-import org.eclipse.jgit.lib.Ref
-import org.eclipse.jgit.lib.Repository
-import org.eclipse.jgit.storage.file.FileRepositoryBuilder
-import org.gradle.api.GradleException
+import mb.gitonium.git.CommandException
+import mb.gitonium.git.GitRepo
+import mb.gitonium.git.NativeGitRepo
 import org.gradle.api.Project
 import java.io.IOException
-import java.util.regex.Pattern
 
 /** Extension for configuring the Gitonium plugin. */
 @Suppress("unused")
 open class GitoniumExtension(private val project: Project) {
 
-    /** The pattern to use to match release tags. The first group should match the actual version string. */
-    var tagPattern: Pattern = Pattern.compile(""".*release-(.+)""")
+    /** The prefix to use to match release tags. */
+    var tagPrefix: String = "release-"
+    /** The suffix to use for snapshot versions. */
+    var snapshotSuffix: String = "SNAPSHOT"
+    /** The suffix to use for dirty versions; or an empty string to use no suffix. */
+    var dirtySuffix: String = "dirty"
+    /** Whether to include the branch name in snapshot versions. */
+    var includeBranchInSnapshots: Boolean = true
     /** Whether to set the version on the root project. */
     var setVersion: Boolean = true
     /** Whether to set the version on the subprojects. */
@@ -25,101 +25,30 @@ open class GitoniumExtension(private val project: Project) {
     /** Whether to check for SNAPSHOT dependencies when publishing a release. */
     var checkSnapshotDependenciesInRelease: Boolean = true
 
-    /** The computed version string. */
-    val version: String by lazy {
-        val repo = repo // Assign to local val to enable smart cast.
-        if (repo == null) {
-            project.logger.warn("Gitonium cannot set the version for $project; no Git repository was found. Defaulting to '${Project.DEFAULT_VERSION}")
-            return@lazy Project.DEFAULT_VERSION
-        }
-
-        val branch = getBranch(repo)
-        val releaseTagVersion = releaseTagVersion // Assign to local val to enable smart cast.
-        when {
-            releaseTagVersion != null -> releaseTagVersion
-            branch != null -> "999.9.9-$branch-SNAPSHOT"
-            else -> {
-                project.logger.info("Gitonium cannot set the version for $project; the repository HEAD does not point to a branch, nor a release tag. Defaulting to '${Project.DEFAULT_VERSION}'")
-                Project.DEFAULT_VERSION
-            }
-        }
-    }
-
-    /** Whether the current version is a release version. */
-    val isRelease: Boolean get() = releaseTagVersion != null
-
-    /** The Git repository, if any; otherwise `null`. */
-    internal val repo: Repository? by lazy {
-        try {
-            FileRepositoryBuilder().readEnvironment().findGitDir(project.rootDir).setMustExist(true).build()
-        } catch (e: RepositoryNotFoundException) {
-            project.logger.warn("Gitonium cannot find a Git repository for $project", e)
-            null
-        }
-    }
-
-    /** The release tag version, if any; otherwise `null`. */
-    private val releaseTagVersion: String? by lazy {
-        val repo = repo ?: return@lazy null
-        getReleaseTag(repo)
+    /** The version info, determined lazily. */
+    val versionInfo: GitoniumVersion by lazy {
+        GitoniumVersion.determineVersion(
+            project.rootDir,
+            tagPrefix,
+            snapshotSuffix,
+            dirtySuffix,
+            includeBranchInSnapshots
+        )
     }
 
     /**
-     * Gets the HEAD ref of the repository.
+     * The computed version string.
      *
-     * @param repo The repository.
-     * @return The HEAD ref.
+     * If the repository HEAD points to a release tag, the version is set to the tag version (e.g., `"1.0.0"`).
+     * If the repository HEAD points not to a release tag, the version is set to a snapshot version
+     * that is higher than the last release version and has the branch name and `.SNAPSHOT` suffix (e.g., `"1.0.1-master.SNAPSHOT"`).
+     * If the repository is dirty, the version is suffixed with `+dirty` (e.g., `"1.0.1-master.SNAPSHOT+dirty"`).
      */
-    private fun getHead(repo: Repository): Ref {
-        try {
-            return repo.exactRef(Constants.HEAD) ?: throw GradleException("Gitonium cannot set the version for $project; repository has no HEAD")
-        } catch (e: IOException) {
-            throw GradleException("Gitonium cannot set the version for $project; exception occurred while resolving repository HEAD", e)
-        }
-    }
+    val version: String get() = versionInfo.versionString ?: Project.DEFAULT_VERSION
 
-    /**
-     * Gets the current branch of the repository.
-     *
-     * @param repo The repository.
-     * @return The current branch, or `null` if the HEAD does not point to a branch.
-     */
-    private fun getBranch(repo: Repository): String? {
-        val headRef = getHead(repo)
-        if (!headRef.isSymbolic) return null
-        return Repository.shortenRefName(headRef.target.name)
-    }
+    /** Whether the current commit has a release version tag. */
+    val isRelease: Boolean get() = versionInfo.isRelease
 
-    /**
-     * Gets the release tag version for the repository HEAD.
-     *
-     * @param repo The repository.
-     * @return The release tag version, or `null` if no release tag was found.
-     */
-    private fun getReleaseTag(repo: Repository): String? {
-        val head = getHead(repo).objectId
-
-        repo.refDatabase.getRefsByPrefix(Constants.R_TAGS).forEach { tagRef ->
-            val (finalTagRef, target) = if (tagRef.isPeeled) {
-                tagRef to (tagRef.peeledObjectId ?: tagRef.objectId)
-            } else {
-                // Peel the ref if it has not been peeled yet, otherwise peeledObjectId will not be set.
-                val peeled = repo.refDatabase.peel(tagRef)
-                peeled to (peeled.peeledObjectId ?: tagRef.objectId)
-            }
-
-            if (target != null && AnyObjectId.isEqual(head, target)) {
-                // Tag names contain 'refs/tags/', which must be removed before matching.
-                val name = finalTagRef.name.replace(Constants.R_TAGS, "")
-                val matcher = tagPattern.matcher(name)
-                if (matcher.matches()) {
-                    val tagVersion = matcher.group(1)
-                    if (tagVersion != null) {
-                        return tagVersion
-                    }
-                }
-            }
-        }
-        return null
-    }
+    /** Whether the repository is dirty (i.e., has uncommitted changes). */
+    val isDirty: Boolean get() = versionInfo.isDirty
 }

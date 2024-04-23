@@ -1,6 +1,5 @@
 package mb.gitonium
 
-import org.eclipse.jgit.lib.internal.WorkQueue
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.register
@@ -25,12 +24,6 @@ class GitoniumPlugin : Plugin<Project> {
             subprojects.forEach {
                 registerCheckSnapshotDependenciesTask(it, extension)
             }
-        }
-
-        // Close repository after build is finished to free resources.
-        project.gradle.buildFinished {
-            extension.repo?.close()
-            WorkQueue.getExecutor().shutdown() // Shutdown JGit work queue.
         }
     }
 

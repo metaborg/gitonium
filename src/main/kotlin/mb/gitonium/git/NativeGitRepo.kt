@@ -45,15 +45,43 @@ class NativeGitRepo(
     }
 
     @Throws(IOException::class)
-    override fun getTagDescription(vararg patterns: String): String {
-        return runGitCommand("describe",
-            "--tags",           // Both annotated and non-annotated tags
-            "--abbrev=7",       // Abbreviate the commit hash to 7 or more characters (however many are needed to make it unique)
-            "--first-parent",   // Only consider the first parent of the commit when encountering a merge commit
-            "--always",         // Just the abbreviated commit hash if no tag is found
-            *patterns.map { "--match=$it" }.toTypedArray(),
-            "HEAD",
-        )
+    override fun getTagDescription(vararg patterns: String, withHash: Boolean): String {
+        if (withHash) {
+            return runGitCommand(
+                "describe",
+                // Both annotated and non-annotated tags
+                "--tags",
+                // Abbreviate the commit hash to 7 or more characters (however many are needed to make it unique)
+                "--abbrev=7",
+                // Only consider the first parent of the commit when encountering a merge commit
+                "--first-parent",
+                // Just the abbreviated commit hash if no tag is found
+                "--always",
+                *patterns.map { "--match=$it" }.toTypedArray(),
+                "HEAD",
+            )
+        } else {
+            try {
+                return runGitCommand(
+                    "describe",
+                    // Both annotated and non-annotated tags
+                    "--tags",
+                    // Leave out the commit hash
+                    "--abbrev=0",
+                    // Only consider the first parent of the commit when encountering a merge commit
+                    "--first-parent",
+                    *patterns.map { "--match=$it" }.toTypedArray(),
+                    "HEAD",
+                )
+            } catch (ex: CommandException) {
+                if (ex.exitCode == 128 && "No names found, cannot describe anything" in ex.stderr) {
+                    // No tags found
+                    return ""
+                } else {
+                    throw ex
+                }
+            }
+        }
     }
 
     @Throws(IOException::class)
@@ -63,7 +91,7 @@ class NativeGitRepo(
 
     @Throws(IOException::class)
     override fun init() {
-        runGitCommand("init")
+        runGitCommand("init", "--initial-branch=main")
     }
 
     @Throws(IOException::class)
