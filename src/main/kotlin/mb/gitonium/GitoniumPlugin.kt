@@ -5,17 +5,20 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.register
 
+/** The Gitonium plugin. */
 @Suppress("unused")
 class GitoniumPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         // Create and add extension.
         val extension = GitoniumExtension(project)
         project.extensions.add("gitonium", extension)
-        // Set project and sub-project versions.
+
+        // Set project and subproject versions.
         project.version = LazyGitoniumVersion(extension, false)
         project.subprojects.forEach {
             it.version = LazyGitoniumVersion(extension, true)
         }
+
         // Register "check for snapshot dependencies" task when publishing for project and sub-projects.
         project.afterEvaluate {
             registerCheckSnapshotDependenciesTask(this, extension)
@@ -23,6 +26,7 @@ class GitoniumPlugin : Plugin<Project> {
                 registerCheckSnapshotDependenciesTask(it, extension)
             }
         }
+
         // Close repository after build is finished to free resources.
         project.gradle.buildFinished {
             extension.repo?.close()
