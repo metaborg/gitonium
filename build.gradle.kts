@@ -16,6 +16,7 @@ repositories {
 
 dependencies {
     implementation      (libs.jgit)
+    implementation      (libs.jgit.pgm)
     testImplementation  (libs.kotest)
     testImplementation  (libs.kotest.assertions)
     testImplementation  (libs.kotest.datatest)

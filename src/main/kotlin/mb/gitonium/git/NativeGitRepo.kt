@@ -104,7 +104,6 @@ class NativeGitRepo(
     }
 
     companion object {
-
         /**
          * Runs a command.
          *

@@ -14,6 +14,7 @@ gitonium                        = { id = "org.metaborg.gitonium",               
 
 [libraries]
 jgit                            = { module = "org.eclipse.jgit:org.eclipse.jgit",                           version.ref = "jgit" }
+jgit-pgm                        = { module = "org.eclipse.jgit:org.eclipse.jgit.pgm",                       version.ref = "jgit" }
 kotest                          = { module = "io.kotest:kotest-runner-junit5",                              version.ref = "kotest" }
 kotest-assertions               = { module = "io.kotest:kotest-assertions-core",                            version.ref = "kotest" }
 kotest-datatest                 = { module = "io.kotest:kotest-framework-datatest",                         version.ref = "kotest" }
