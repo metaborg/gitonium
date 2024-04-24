@@ -114,8 +114,8 @@ class GitoniumVersionTests: FunSpec({
 
             // Assert
             assertSoftly {
-                versionInfo.version shouldBe SemanticVersion(1, 0, 1, listOf("main", "SNAPSHOT"))
-                versionInfo.versionString shouldBe "1.0.1-main.SNAPSHOT"
+                versionInfo.version shouldBe SemanticVersion(1, 0, 1, listOf("main-SNAPSHOT"))
+                versionInfo.versionString shouldBe "1.0.1-main-SNAPSHOT"
                 versionInfo.isDirty shouldBe false
                 versionInfo.isRelease shouldBe false
                 versionInfo.isSnapshot shouldBe true
@@ -137,8 +137,8 @@ class GitoniumVersionTests: FunSpec({
 
             // Assert
             assertSoftly {
-                versionInfo.version shouldBe SemanticVersion(1, 0, 1, listOf("main", "SNAPSHOT"), listOf("dirty"))
-                versionInfo.versionString shouldBe "1.0.1-main.SNAPSHOT+dirty"
+                versionInfo.version shouldBe SemanticVersion(1, 0, 1, listOf("main-SNAPSHOT"), listOf("dirty"))
+                versionInfo.versionString shouldBe "1.0.1-main-SNAPSHOT+dirty"
                 versionInfo.isDirty shouldBe true
                 versionInfo.isRelease shouldBe false
                 versionInfo.isSnapshot shouldBe true

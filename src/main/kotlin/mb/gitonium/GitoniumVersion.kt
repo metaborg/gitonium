@@ -30,31 +30,41 @@ data class GitoniumVersion(
             repoDirectory: File,
             /** The prefix to use to match release tags. */
             tagPrefix: String = "release-",
-            /** The suffix to use for snapshot versions. */
-            snapshotSuffix: String = "-SNAPSHOT",
             /** The suffix to use for dirty versions; or an empty string to use no suffix. */
-            dirtySuffix: String = "+dirty",
+            dirtySuffix: String = "dirty",
+            /** The major increase for snapshot versions. */
+            snapshotMajorIncrease: Int = 0,
+            /** The minor increase for snapshot versions. */
+            snapshotMinorIncrease: Int = 0,
+            /** The patch increase for snapshot versions. */
+            snapshotPatchIncrease: Int = 1,
+            /** The suffix to use for snapshot versions; or an empty string to use no suffix. */
+            snapshotSuffix: String = "-SNAPSHOT",
             /** Whether to include the branch name in snapshot versions. */
-            includeBranchInSnapshots: Boolean = true,
+            snapshotIncludeBranch: Boolean = true,
         ): GitoniumVersion {
 
             val repo = getGitRepo(repoDirectory) ?: throw IOException("No Git repository found at $repoDirectory.")
 
-            val releaseTagVersionStr = repo.getReleaseTagVersion(tagPrefix)?.substringAfter(tagPrefix)
             val (tagVersion, isSnapshot) = repo.getCurrentVersion(tagPrefix)
+            val actualTagVersion = if (tagVersion != null && isSnapshot) tagVersion.copy(
+                major = tagVersion.major + snapshotMajorIncrease,
+                minor = tagVersion.minor + snapshotMinorIncrease,
+                patch = tagVersion.patch + snapshotPatchIncrease,
+            ) else tagVersion
 
             // Determine the current branch name
-            val branch = if (isSnapshot && includeBranchInSnapshots) repo.getCurrentBranchOrNull() else null
+            val branch = if (isSnapshot && snapshotIncludeBranch) repo.getCurrentBranchOrNull() else null
+            val snapshotVersionSuffix = if (isSnapshot) { "${branch ?: ""}$snapshotSuffix".ifBlank { null } } else null
+            val dirtyVersionSuffix = if (repo.isDirty()) dirtySuffix.ifBlank { null } else null
 
-            val version = tagVersion?.let {
+            val version = actualTagVersion?.let {
                 SemanticVersion(
                     major = it.major,
                     minor = it.minor,
                     patch = it.patch,
-                    preRelease = it.preRelease +
-                      (if (branch != null) listOf(branch) else emptyList()) +
-                      (if (isSnapshot) listOf("SNAPSHOT") else emptyList()),
-                    build = it.build + if (repo.isDirty()) listOf("dirty") else emptyList()
+                    preRelease = it.preRelease + listOfNotNull(snapshotVersionSuffix),
+                    build = it.build + listOfNotNull(dirtyVersionSuffix),
                 )
             }
             return GitoniumVersion(
@@ -120,7 +130,7 @@ data class GitoniumVersion(
                 val recentTagVersionStr = getRecentReleaseTagVersion(tagPrefix)?.substringAfter(tagPrefix) ?: return (null to isSnapshot)
                 val tagVersion = SemanticVersion.of(recentTagVersionStr) ?: return (null to isSnapshot)
                 // Increment the version, such that Gradle accepts this version as _newer_ than the last release version.
-                tagVersion.copy(patch = tagVersion.patch + 1)
+                tagVersion
             } else {
                 // The HEAD does have a release version tag
                 isSnapshot = false
