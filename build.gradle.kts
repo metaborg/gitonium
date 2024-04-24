@@ -1,7 +1,8 @@
+// Workaround for issue: https://youtrack.jetbrains.com/issue/KTIJ-19369
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     `java-library`
-    id("org.metaborg.gitonium") version "0.1.5"   // Bootstrap with previous version. Must match version in libs.versions.toml
-    //kotlin("jvm") version "1.7.10"                // Must match version in libs.versions.toml
+    alias(libs.plugins.gitonium)   // Bootstrap with previous version
     `kotlin-dsl`
     `java-gradle-plugin`
     `maven-publish`
@@ -15,8 +16,6 @@ repositories {
 }
 
 dependencies {
-    implementation      (libs.jgit)
-    implementation      (libs.jgit.pgm)
     testImplementation  (libs.kotest)
     testImplementation  (libs.kotest.assertions)
     testImplementation  (libs.kotest.datatest)
@@ -29,7 +28,7 @@ tasks.test {
 
 kotlin {
     jvmToolchain {
-        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(11))
     }
 }
 
