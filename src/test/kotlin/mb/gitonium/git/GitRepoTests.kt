@@ -316,15 +316,26 @@ fun GitRepoTests(gitRepoBuilder: (File) -> GitRepo) = funSpec {
             exception.exitCode shouldBe 128
         }
 
-        test("should throw an exception, when the repository has no commits") {
+        test("should throw an exception, when the repository has no commits, when withHash is true") {
             // Arrange
             val repo = createEmptyRepository(gitRepoBuilder)
 
             // Act/Assert
             val exception = shouldThrow<CommandException> {
-                repo.getTagDescription()
+                repo.getTagDescription(withHash = true)
             }
             exception.exitCode shouldBe 128
+        }
+
+        test("should return an empty string, when the repository has no commits, when withHash is false") {
+            // Arrange
+            val repo = createEmptyRepository(gitRepoBuilder)
+
+            // Act
+            val tagDescription = repo.getTagDescription(withHash = false)
+
+            // Assert
+            tagDescription shouldBe ""
         }
 
         test("should return the short commit hash, when the repository has commits but no tags, when withHash is true") {
