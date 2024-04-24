@@ -12,6 +12,8 @@ import kotlin.jvm.Throws
 class NativeGitRepo(
     /** The current working directory. */
     override val directory: File,
+    /** Environment variables to apply. */
+    val environment: Map<String, String> = emptyMap(),
 ): GitRepo {
 
     override fun getGitVersion(): String? {
@@ -128,6 +130,7 @@ class NativeGitRepo(
         return runCommand(
             workingDirectory = directory,
             cmd,
+            environment = environment,
         )
     }
 

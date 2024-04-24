@@ -2,6 +2,7 @@ package mb.gitonium.git
 
 import io.kotest.core.TestConfiguration
 import io.kotest.engine.spec.tempdir
+import io.kotest.engine.spec.tempfile
 import java.io.File
 
 object GitTestUtils {
@@ -19,6 +20,20 @@ object GitTestUtils {
         return (1..length)
             .map { allowedChars.random() }
             .joinToString("")
+    }
+
+    /**
+     * Copies a test gitconfig to a temporary file, and returns its path.
+     */
+    fun TestConfiguration.copyTestGitConfig(): File {
+        // Copy the git configuration somewhere
+        GitTestUtils::class.java.getResourceAsStream("/gitconfig")?.use { input ->
+            val gitconfigFile = tempfile(".gitconfig")
+            gitconfigFile.outputStream().use { output ->
+                input.copyTo(output)
+            }
+            return gitconfigFile
+        } ?: error("Could not copy git configuration.")
     }
 
     /**

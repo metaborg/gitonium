@@ -5,8 +5,8 @@ import io.kotest.engine.spec.tempdir
 import io.kotest.matchers.shouldBe
 import io.kotest.assertions.assertSoftly
 import io.kotest.assertions.throwables.shouldThrow
-import io.kotest.matchers.string.shouldNotBeBlank
 import mb.gitonium.git.GitTestUtils.commitFile
+import mb.gitonium.git.GitTestUtils.copyTestGitConfig
 import mb.gitonium.git.GitTestUtils.createEmptyRepository
 import mb.gitonium.git.NativeGitRepo
 import java.io.File
@@ -14,6 +14,15 @@ import java.io.IOException
 
 /** Tests the [GitoniumVersion] class. */
 class GitoniumVersionTests: FunSpec({
+
+    val gitConfigPath: File = copyTestGitConfig()
+
+    fun buildGitRepo(directory: File): NativeGitRepo {
+        return NativeGitRepo(directory, environment = mapOf(
+            // Override the git configuration (Git >= 2.32.0)
+            "GIT_CONFIG_GLOBAL" to gitConfigPath.absolutePath,
+        ))
+    }
 
     context("determineVersion()") {
         test("should throw, when the directory is not a Git repository") {
@@ -30,7 +39,7 @@ class GitoniumVersionTests: FunSpec({
 
         test("should return no version, when the directory is an empty Git repository") {
             // Arrange
-            val repo = createEmptyRepository { NativeGitRepo(it) }
+            val repo = createEmptyRepository(::buildGitRepo)
 
             // Act
             val versionInfo = GitoniumVersion.determineVersion(
@@ -50,7 +59,7 @@ class GitoniumVersionTests: FunSpec({
 
         test("should return the version of the last release tag, when the HEAD points to a release tag") {
             // Arrange
-            val repo = createEmptyRepository { NativeGitRepo(it) }
+            val repo = createEmptyRepository(::buildGitRepo)
             repo.commitFile("Initial commit", "file1.txt")
             repo.tag("release-1.0.0")
 
@@ -71,7 +80,7 @@ class GitoniumVersionTests: FunSpec({
 
         test("should return a dirty release version, when the HEAD points to a release tag and there are changes") {
             // Arrange
-            val repo = createEmptyRepository { NativeGitRepo(it) }
+            val repo = createEmptyRepository(::buildGitRepo)
             repo.commitFile("Initial commit", "file1.txt")
             repo.tag("release-1.0.0")
             File(repo.directory, "uncommitted.txt").writeText("uncommitted")
@@ -93,7 +102,7 @@ class GitoniumVersionTests: FunSpec({
 
         test("should return the snapshot version ahead of the last release tag, when the HEAD points to a commit after a release tag") {
             // Arrange
-            val repo = createEmptyRepository { NativeGitRepo(it) }
+            val repo = createEmptyRepository(::buildGitRepo)
             repo.commitFile("Initial commit", "file1.txt")
             repo.tag("release-1.0.0")
             repo.commitFile("Second commit", "file2.txt")
@@ -115,7 +124,7 @@ class GitoniumVersionTests: FunSpec({
 
         test("should return a dirty snapshot version, when the HEAD points to a commit after a release tag and there are changes") {
             // Arrange
-            val repo = createEmptyRepository { NativeGitRepo(it) }
+            val repo = createEmptyRepository(::buildGitRepo)
             repo.commitFile("Initial commit", "file1.txt")
             repo.tag("release-1.0.0")
             repo.commitFile("Second commit", "file2.txt")
