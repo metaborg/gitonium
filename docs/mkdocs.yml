@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 site_name: Gitonium
 site_description: A plugin for version management using Git
@@ -9,19 +10,19 @@ edit_uri: https://github.com/metaborg/gitonium/edit/main/docs
 
 nav:
   - Home:
-    - index.md
+      - index.md
 
 theme:
   name: material
   language: en
   icon:
-    logo: fontawesome/solid/book
+    logo: fontawesome/solid/code-fork
     repo: fontawesome/brands/github
   palette:
     # Light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: blue grey
+      primary: deep purple
       accent: orange
       toggle:
         icon: material/weather-night
@@ -29,7 +30,7 @@ theme:
     # Dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: blue grey
+      primary: deep purple
       accent: orange
       toggle:
         icon: material/weather-sunny
@@ -94,7 +95,5 @@ plugins:
   - git-revision-date-localized:
       enable_creation_date: true
       fallback_to_build_date: true
-
   - macros:
       module_name: tools/macro
-

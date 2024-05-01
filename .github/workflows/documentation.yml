@@ -1,9 +1,10 @@
 ---
 name: Documentation
 
-on:
+on:  # yamllint disable-line rule:truthy
   push:
     branches:
+      - main
       - master
   workflow_dispatch:  # Allow running this workflow manually (Actions tab)
 
@@ -28,7 +29,7 @@ jobs:
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v4
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
       - name: Upgrade pip
@@ -37,7 +38,7 @@ jobs:
         id: pip-cache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: Cache Python packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('docs/requirements.txt') }}
@@ -48,7 +49,7 @@ jobs:
       - name: Build Mkdocs
         run: cd docs/ && mkdocs build
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: docs/site/
 
