@@ -1,4 +1,3 @@
-
 # Gitonium
 [![Build][github-build-badge]][github-build]
 [![License][license-badge]][license]
@@ -9,7 +8,7 @@ Gitonium is a Gradle plugin for automatic versioning based on the current Git br
 
 
 ## Requirements
-Gradle 6 or higher is required. The code snippets in this README assume you are using Gradle with Kotlin, but should be translatable to Groovy as well.
+Gradle 7 or higher is required. The code snippets in this README assume you are using Gradle with Kotlin, but should be translatable to Groovy as well.
 
 
 ## Prerequisites
@@ -36,27 +35,13 @@ plugins {
 The latest version of the plugin can be found at the top of this README. Gitonium will then lazily set the version of the project, and all sub-projects, to a version based on the Git repository. To override the version of a project, simply set the version as usual, and this will override the lazily set version.
 
 
-## Versioning
-Gitonium will check the current directory for a Git repository. If none is found in that directory, it will check its parent directory for one, and so on. If no Git repository is found, the plugin fails.
+## Usage
+Gitonium sets the version of the project based on the latest version tag (of the form `release-{version}`) found on the current branch. For example, if the HEAD of the current branch is tagged `release-0.1.3`, then the version is assigned `0.1.3`. Alternatively, if an earlier commit on the `main` branch is tagged `release-0.1.3`, then the version `0.1.4-main-SNAPSHOT` is assigned, one patch version higher than the last release.
 
-In the found Git repository, Gitonium will check if a release tag in the form of `release-{version}` points to the HEAD of the repository. If so, it will set the version of the project to `{version}`. For example, a tag `release-0.1.3` pointing to the HEAD will result in version `0.1.3`.
-
-If no release tag was found, but the HEAD is on a branch, the version will be set to `999.9.9-{branch}-SNAPSHOT`. The `999.9.9` prefix to the version ensures that [Gradle always orders this version higher than regular release versions](https://docs.gradle.org/current/userguide/single_versions.html#version_ordering), and thus makes it possible to upgrade to it. For example, a HEAD on branch `master` will result in version `999.9.9-master-SNAPSHOT`.
-
-If no release tag was found, and the HEAD is not on a branch, the version is not set and therefore defaults to Gradle's default version of `unspecified`.
+If no release tag was found, the version is not set and therefore defaults to Gradle's default version of `unspecified`.
 
 If the repository has no HEAD, Gitonium will fail.
 
-
-## Building
-This repository is built with Gradle, which requires a JDK of at least version 8 to be installed. Higher versions may work depending on [which version of Gradle is used](https://docs.gradle.org/current/userguide/compatibility.html).
-
-To build this repository, run `./gradlew build` on Linux and macOS, or `gradlew.bat build` on Windows.
-
-### Automated Builds
-All branches and tags of this repository are built on:
-- [GitHub actions](https://github.com/metaborg/gitonium/actions/workflows/build.yml) via `.github/workflows/build.yml`.
-- Our [Jenkins buildfarm](https://buildfarm.metaborg.org/view/Devenv/job/metaborg/job/gitonium/) via `Jenkinsfile` which uses our [Jenkins pipeline library](https://github.com/metaborg/jenkins.pipeline/).
 
 
 ## License

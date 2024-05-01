@@ -1,0 +1,30 @@
+.no-ligatures code, code.no-ligatures {
+    font-variant-ligatures: none;
+}
+
+.guilabel {
+    border: 1px solid var(--md-accent-fg-color);
+    background: var(--md-code-bg-color);
+    font-size: 80%;
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 1px 3px;
+    margin: auto 1px;
+}
+
+.true {
+    color: #00c853;
+}
+.trace {
+}
+.debug {
+}
+.info {
+    color: #00b8d4;
+}
+.warning {
+    color: #ff9100;
+}
+.error, .stop, .false {
+    color: #ff1744;
+}
