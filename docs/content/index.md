@@ -13,7 +13,7 @@ This plugin requires Gradle 7 or newer.
 To apply this plugin, first add the Metaborg plugin repository to your `settings.gradle` file:
 
 === "Kotlin"
-    ```kotlin
+    ```kotlin title="settings.gradle.kts"
     pluginManagement {
         repositories {
             maven("https://artifacts.metaborg.org/content/repositories/releases/")
@@ -22,7 +22,7 @@ To apply this plugin, first add the Metaborg plugin repository to your `settings
     ```
 
 === "Groovy"
-    ```groovy
+    ```groovy title="settings.gradle"
     pluginManagement {
         repositories {
             maven {
@@ -35,8 +35,17 @@ To apply this plugin, first add the Metaborg plugin repository to your `settings
 ## Applying the plugin
 Apply the gitonium plugin to a project (a `build.gradle(.kts)` file) as follows:
 
-```kotlin
-plugins {
-    id("org.metaborg.gitonium") version("0.1.5")
-}
-```
+=== "Kotlin"
+    ```kotlin title="build.gradle.kts"
+    plugins {
+        id("org.metaborg.gitonium") version "0.1.5"
+    }
+    ```
+
+=== "Groovy"
+    ```groovy title="build.gradle"
+    plugins {
+        id "org.metaborg.gitonium" version "0.1.5"
+    }
+    ```
+
