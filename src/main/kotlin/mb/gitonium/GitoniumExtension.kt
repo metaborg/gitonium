@@ -1,6 +1,7 @@
 package mb.gitonium
 
 import org.gradle.api.Project
+import java.util.regex.Pattern
 
 /** Extension for configuring the Gitonium plugin. */
 @Suppress("unused")
@@ -8,6 +9,9 @@ open class GitoniumExtension(private val project: Project) {
 
     /** The prefix to use to match release tags. */
     var tagPrefix: String = "release-"
+    /** The pattern to use to match release tags. Deprecated. */
+    @Deprecated("Use tagPrefix instead.", ReplaceWith("tagPrefix"))
+    var tagPattern: Pattern? = null
 
     /** The suffix to use for dirty (release or snapshot) versions; or an empty string to use no suffix. */
     var dirtySuffix: String = "dirty"
@@ -43,9 +47,19 @@ open class GitoniumExtension(private val project: Project) {
 
     /** The version info, determined lazily. */
     val versionInfo: GitoniumVersion by lazy {
+        @Suppress("DEPRECATION") val prefix = tagPattern?.let {
+            // For backwards compatibility, we allow tagPattern to be set if it consists of a prefix and a suffix of `(.+)`.
+            val patternStr = it.pattern()
+            if (patternStr.endsWith("(.+)")) {
+                patternStr.substringBeforeLast("(.+)")
+            } else {
+                throw IllegalArgumentException("tagPattern is no longer supported, use tagPrefix.")
+            }
+        } ?: tagPrefix
+
         GitoniumVersion.determineVersion(
             project.rootDir,
-            tagPrefix,
+            prefix,
             dirtySuffix,
             snapshotMajorIncrease,
             snapshotMinorIncrease,
