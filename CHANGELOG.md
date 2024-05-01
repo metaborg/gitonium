@@ -9,6 +9,8 @@ All notable changes to this project are documented in this file, based on [Keep 
   For example, if the last release was `1.0.0`, the snapshot version is `1.0.1-SNAPSHOT`
   (or `1.0.1-main-SNAPSHOT` when including the branch name). This removes the previous practice
   of setting the snapshot version to `999.9.9`.
+- The `tagPattern` Regex member of the `gitonium` extension has been removed.
+- The `tagPrefix` String member of the `gitonium` extension has been added. For example, instead of a `tagPattern` of `devenv-release/(.+)`, a `tagPrefix` of `devenv-release/` should be used.
 
 
 ## [0.1.5] - 2022-01-19
