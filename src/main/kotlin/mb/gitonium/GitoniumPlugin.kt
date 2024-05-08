@@ -1,30 +1,34 @@
 package mb.gitonium
 
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.extra
 import org.gradle.kotlin.dsl.register
 
 /** The Gitonium plugin. */
 @Suppress("unused")
 class GitoniumPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        // Create and add extension.
+        // Create and add extension
         val extension = GitoniumExtension(project)
         project.extensions.add("gitonium", extension)
 
-        // Set project and subproject versions.
+        // Set project and subproject versions
         project.version = LazyGitoniumVersion(extension, false)
         project.subprojects.forEach {
             it.version = LazyGitoniumVersion(extension, true)
         }
 
-        // Register "check for snapshot dependencies" task when publishing for project and sub-projects.
+        // Register tasks
         project.afterEvaluate {
             registerCheckSnapshotDependenciesTask(this, extension)
             registerPrintVersionTask(this)
+            registerAssertNotDirtyTask(this)
             subprojects.forEach {
                 registerCheckSnapshotDependenciesTask(it, extension)
                 registerPrintVersionTask(it)
+                registerAssertNotDirtyTask(it)
             }
         }
     }
@@ -37,9 +41,8 @@ class GitoniumPlugin : Plugin<Project> {
      */
     private fun registerCheckSnapshotDependenciesTask(project: Project, extension: GitoniumExtension) {
         if (!extension.checkSnapshotDependenciesInRelease) return
-        val publishTask = project.tasks.findByName("publish") ?: return
         val checkTask = project.tasks.register<CheckSnapshotDependencies>("checkSnapshotDependencies", extension)
-        publishTask.dependsOn(checkTask)
+        project.tasks.findByName("publish")?.dependsOn(checkTask)
     }
 
     /**
@@ -51,6 +54,21 @@ class GitoniumPlugin : Plugin<Project> {
         project.tasks.register("printVersion") {
             println(project.version)
         }
+    }
+
+    /**
+     * Registers a task that asserts that the current version of the project is not 'dirty',
+     * i.e., has changes not in the current version tag.
+     *
+     * @param project The project for which to register the task.
+     */
+    private fun registerAssertNotDirtyTask(project: Project) {
+        val assertNotDirty = project.tasks.register("assertNotDirty") {
+            if (project.version.toString().endsWith(".dirty")) {
+                throw GradleException("Cannot publish a dirty version: ${project.version}")
+            }
+        }
+        project.tasks.findByName("publish")?.dependsOn(assertNotDirty)
     }
 }
 

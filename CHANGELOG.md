@@ -4,6 +4,8 @@ All notable changes to this project are documented in this file, based on [Keep 
 
 ## [Unreleased]
 - Add `printVersion` task that prints the current project version to STDOUT.
+- Add `assertNotDirty` task that fails when trying to publish a 'dirty' version
+  (i.e., a version with changes not in the current version tag).
 
 
 ## [1.0.0] - 2024-05-08
