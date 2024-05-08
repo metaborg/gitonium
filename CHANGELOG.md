@@ -3,9 +3,6 @@ All notable changes to this project are documented in this file, based on [Keep 
 
 
 ## [Unreleased]
-- Add `printVersion` task that prints the current project version to STDOUT.
-- Add `assertNotDirty` task that fails when trying to publish a 'dirty' version
-  (i.e., a version with changes not in the current version tag).
 
 
 ## [1.0.0] - 2024-05-08
@@ -17,6 +14,11 @@ All notable changes to this project are documented in this file, based on [Keep 
   of setting the snapshot version to `999.9.9`.
 - The `tagPattern` Regex member of the `gitonium` extension has been removed.
 - The `tagPrefix` String member of the `gitonium` extension has been added. For example, instead of a `tagPattern` of `devenv-release/(.+)`, a `tagPrefix` of `devenv-release/` should be used.
+
+### Added
+- Add `printVersion` task that prints the current project version to STDOUT.
+- Add `assertNotDirty` task that fails when trying to publish a 'dirty' version
+  (i.e., a version with changes not in the current version tag).
 
 
 ## [0.1.5] - 2022-01-19
