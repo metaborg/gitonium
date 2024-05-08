@@ -3,6 +3,7 @@ All notable changes to this project are documented in this file, based on [Keep 
 
 
 ## [Unreleased]
+- Add `printVersion` task that prints the current project version to STDOUT.
 
 
 ## [1.0.0] - 2024-05-08
