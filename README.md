@@ -28,7 +28,7 @@ Apply the gitonium plugin to a project (a `build.gradle(.kts)` file) as follows:
 
 ```kotlin
 plugins {
-    id("org.metaborg.gitonium") version("0.1.5")
+    id("org.metaborg.gitonium") version("1.0.0")
 }
 ```
 
