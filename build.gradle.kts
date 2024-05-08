@@ -1,3 +1,5 @@
+import java.net.URI
+
 // Workaround for issue: https://youtrack.jetbrains.com/issue/KTIJ-19369
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -10,6 +12,8 @@ plugins {
 
 
 group = "org.metaborg"
+description = "A Git-based versioning plugin for Gradle."
+extra["isReleaseVersion"] = !version.toString().endsWith("-SNAPSHOT")
 
 repositories {
     mavenCentral()
@@ -38,6 +42,8 @@ configure<JavaPluginExtension> {
 }
 
 gradlePlugin {
+    website.set("https://github.com/metaborg/gitonium")
+    vcsUrl.set("https://github.com/metaborg/gitonium")
     plugins {
         create("gitonium") {
             id = "org.metaborg.gitonium"
@@ -81,6 +87,18 @@ publishing {
                     developerConnection.set("scm:git@github.com:metaborg/gitonium.git")
                     url.set("scm:git@github.com:metaborg/gitonium.git")
                 }
+            }
+        }
+    }
+    repositories {
+        maven {
+            val releasesRepoUrl = uri("https://artifacts.metaborg.org/content/repositories/releases/")
+            val snapshotsRepoUrl = uri("https://artifacts.metaborg.org/content/repositories/snapshots/")
+            name = "MetaborgArtifacts"
+            url = if (project.extra["isReleaseVersion"] as Boolean) releasesRepoUrl else snapshotsRepoUrl
+            credentials {
+                username = project.findProperty("metaborg-artifacts.username") as String?
+                password = project.findProperty("metaborg-artifacts.password") as String?
             }
         }
     }
