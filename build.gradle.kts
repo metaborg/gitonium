@@ -32,11 +32,56 @@ kotlin {
     }
 }
 
+configure<JavaPluginExtension> {
+    withSourcesJar()
+    withJavadocJar()
+}
+
 gradlePlugin {
     plugins {
         create("gitonium") {
             id = "org.metaborg.gitonium"
             implementationClass = "mb.gitonium.GitoniumPlugin"
+        }
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+
+            pom {
+                name.set("Gitonium")
+                description.set(project.description)
+                url.set("https://github.com/metaborg/gitonium")
+                inceptionYear.set("2023")
+                licenses {
+                    // From: https://spdx.org/licenses/
+                    license {
+                        name.set("Apache-2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        distribution.set("repo")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("gohla")
+                        name.set("Gabriel Konat")
+                        email.set("g.d.p.konat@tudelft.nl")
+                    }
+                    developer {
+                        id.set("virtlink")
+                        name.set("Daniel A. A. Pelsmaeker")
+                        email.set("d.a.a.pelsmaeker@tudelft.nl")
+                    }
+                }
+                scm {
+                    connection.set("scm:git@github.com:metaborg/gitonium.git")
+                    developerConnection.set("scm:git@github.com:metaborg/gitonium.git")
+                    url.set("scm:git@github.com:metaborg/gitonium.git")
+                }
+            }
         }
     }
 }
