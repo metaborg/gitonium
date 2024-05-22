@@ -5,6 +5,7 @@ All notable changes to this project are documented in this file, based on [Keep 
 ## [Unreleased]
 ### Fixed
 - Plugin can now be used without applying `maven-publish`.
+- Fix `assertNotDirty` not detecting dirty versions properly.
 
 
 ## [1.0.0] - 2024-05-08
