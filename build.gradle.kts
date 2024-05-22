@@ -97,8 +97,8 @@ publishing {
             name = "MetaborgArtifacts"
             url = if (project.extra["isReleaseVersion"] as Boolean) releasesRepoUrl else snapshotsRepoUrl
             credentials {
-                username = project.findProperty("metaborg-artifacts.username") as String?
-                password = project.findProperty("metaborg-artifacts.password") as String?
+                username = project.findProperty("publish.repository.metaborg.artifacts.username") as String?
+                password = project.findProperty("publish.repository.metaborg.artifacts.password") as String?
             }
         }
     }
