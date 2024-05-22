@@ -75,12 +75,13 @@ interface GitRepo {
      *
      * This is equivalent to `git status --porcelain`.
      *
+     * @param showUntracked Whether to show untracked files.
      * @return The status of the repository.
      * @throws CommandException If the command fails or returns a non-zero exit code.
      * @throws IOException If an I/O error occurs.
      */
     @Throws(IOException::class)
-    fun getStatus(): String
+    fun getStatus(showUntracked: Boolean = true): String
 
     /**
      * Initializes the repository.

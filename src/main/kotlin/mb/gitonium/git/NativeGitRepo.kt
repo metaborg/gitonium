@@ -87,8 +87,8 @@ class NativeGitRepo(
     }
 
     @Throws(IOException::class)
-    override fun getStatus(): String {
-        return runGitCommand("status", "--porcelain")
+    override fun getStatus(showUntracked: Boolean): String {
+        return runGitCommand("status", "--porcelain", "--untracked-files=${if (showUntracked) "normal" else "no"}")
     }
 
     @Throws(IOException::class)
