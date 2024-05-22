@@ -3,7 +3,6 @@ package mb.gitonium
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.extra
 import org.gradle.kotlin.dsl.register
 
 /** The Gitonium plugin. */
@@ -21,15 +20,13 @@ class GitoniumPlugin : Plugin<Project> {
         }
 
         // Register tasks
-        project.afterEvaluate {
-            registerCheckSnapshotDependenciesTask(this, extension)
-            registerPrintVersionTask(this)
-            registerAssertNotDirtyTask(this)
-            subprojects.forEach {
-                registerCheckSnapshotDependenciesTask(it, extension)
-                registerPrintVersionTask(it)
-                registerAssertNotDirtyTask(it)
-            }
+        registerCheckSnapshotDependenciesTask(project, extension)
+        registerPrintVersionTask(project)
+        registerAssertNotDirtyTask(project)
+        project.subprojects.forEach {
+            registerCheckSnapshotDependenciesTask(it, extension)
+            registerPrintVersionTask(it)
+            registerAssertNotDirtyTask(it)
         }
     }
 
