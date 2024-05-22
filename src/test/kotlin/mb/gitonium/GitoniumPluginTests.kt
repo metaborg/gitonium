@@ -7,6 +7,7 @@ import mb.gitonium.git.GitTestUtils.copyTestGitConfig
 import mb.gitonium.git.GitTestUtils.createEmptyRepository
 import mb.gitonium.git.GitTestUtils.writeFile
 import mb.gitonium.git.NativeGitRepo
+import org.gradle.kotlin.dsl.support.normaliseLineSeparators
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import java.io.File
@@ -83,7 +84,8 @@ class GitoniumPluginTests: FunSpec({
                 .build()
 
             // Assert
-            val versionStr = result.output.substringAfter("> Task :printVersion\n").substringBefore('\n')
+            val versionStr = result.output.normaliseLineSeparators()
+                .substringAfter("> Task :printVersion\n").substringBefore('\n')
             versionStr shouldBe "1.2.3"
         }
 
@@ -115,7 +117,8 @@ class GitoniumPluginTests: FunSpec({
                 .build()
 
             // Assert
-            val versionStr = result.output.substringAfter("> Task :printVersion\n").substringBefore('\n')
+            val versionStr = result.output.normaliseLineSeparators()
+                .substringAfter("> Task :printVersion\n").substringBefore('\n')
             versionStr shouldBe "1.2.3+dirty"
         }
     }
