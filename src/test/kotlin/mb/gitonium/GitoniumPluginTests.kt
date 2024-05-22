@@ -3,19 +3,28 @@ package mb.gitonium
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
+import mb.gitonium.git.GitTestUtils.copyTestGitConfig
 import mb.gitonium.git.GitTestUtils.createEmptyRepository
 import mb.gitonium.git.GitTestUtils.writeFile
 import mb.gitonium.git.NativeGitRepo
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
+import java.io.File
 
 /** Tests the [GitoniumPlugin]. */
 class GitoniumPluginTests: FunSpec({
 
+    val gitConfigPath: File = copyTestGitConfig()
+
+    fun gitRepoBuilder(dir: File) = NativeGitRepo(dir, environment = mapOf(
+        // Override the git configuration (Git >= 2.32.0)
+        "GIT_CONFIG_GLOBAL" to gitConfigPath.absolutePath,
+    ))
+
     context("task :tasks") {
         test("should print the Gitonium tasks") {
             // Arrange
-            val repo = createEmptyRepository { NativeGitRepo(it) }
+            val repo = createEmptyRepository(::gitRepoBuilder)
             val buildFile = repo.directory.resolve("build.gradle.kts")
             buildFile.writeText(
                 """
@@ -49,7 +58,7 @@ class GitoniumPluginTests: FunSpec({
     context("task :printVersion") {
         test("should print clean version when git repo is clean") {
             // Arrange
-            val repo = createEmptyRepository { NativeGitRepo(it) }
+            val repo = createEmptyRepository(::gitRepoBuilder)
             val buildFile = repo.directory.resolve("build.gradle.kts")
             buildFile.writeText(
                 """
@@ -80,7 +89,7 @@ class GitoniumPluginTests: FunSpec({
 
         test("should print dirty version when git repo has changed files") {
             // Arrange
-            val repo = createEmptyRepository { NativeGitRepo(it) }
+            val repo = createEmptyRepository(::gitRepoBuilder)
             val buildFile = repo.directory.resolve("build.gradle.kts")
             buildFile.writeText(
                 """
@@ -115,7 +124,7 @@ class GitoniumPluginTests: FunSpec({
     context("task :checkSnapshotDependencies") {
         test("should fail if there are snapshot dependencies") {
             // Arrange
-            val repo = createEmptyRepository { NativeGitRepo(it) }
+            val repo = createEmptyRepository(::gitRepoBuilder)
             val buildFile = repo.directory.resolve("build.gradle.kts")
             buildFile.writeText(
                 """
@@ -149,7 +158,7 @@ class GitoniumPluginTests: FunSpec({
 
         test("should fail to publish if there are snapshot dependencies") {
             // Arrange
-            val repo = createEmptyRepository { NativeGitRepo(it) }
+            val repo = createEmptyRepository(::gitRepoBuilder)
             val buildFile = repo.directory.resolve("build.gradle.kts")
             buildFile.writeText(
                 """
@@ -188,7 +197,7 @@ class GitoniumPluginTests: FunSpec({
     context("task :assertNotDirty") {
         test("should fail if the project is dirty") {
             // Arrange
-            val repo = createEmptyRepository { NativeGitRepo(it) }
+            val repo = createEmptyRepository(::gitRepoBuilder)
             val buildFile = repo.directory.resolve("build.gradle.kts")
             buildFile.writeText(
                 """
@@ -219,7 +228,7 @@ class GitoniumPluginTests: FunSpec({
 
         test("should fail to publish if the project is dirty") {
             // Arrange
-            val repo = createEmptyRepository { NativeGitRepo(it) }
+            val repo = createEmptyRepository(::gitRepoBuilder)
             val buildFile = repo.directory.resolve("build.gradle.kts")
             buildFile.writeText(
                 """
