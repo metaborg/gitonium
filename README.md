@@ -32,7 +32,7 @@ plugins {
 }
 ```
 
-The latest version of the plugin can be found at the top of this README. Gitonium will then lazily set the version of the project, and all sub-projects, to a version based on the Git repository. To override the version of a project, simply set the version as usual, and this will override the lazily set version.
+The latest version of the plugin can be found at the top of this README. Gitonium will then lazily set the version of the project, and all sub-projects, to a version based on the Git repository. To override the version of a project, simply set the version manually, and this will override the lazily set version.
 
 
 ## Usage
@@ -41,6 +41,20 @@ Gitonium sets the version of the project based on the latest version tag (of the
 If no release tag was found, the version is not set and therefore defaults to Gradle's default version of `unspecified`.
 
 If the repository has no HEAD, Gitonium will fail.
+
+> [!IMPORTANT]
+> A shallow clone of a repository (as commonly performed by CI) might not checkout the tags of the repository.
+> In this case, Gitonium will fail to find the version tag.
+>
+> For example, when using GitHub CI `actions/checkout` action, specify a non-shallow checkout including tags:
+>
+> ```yaml
+> - name: Checkout
+>   uses: actions/checkout@v4
+>   with:
+>     fetch-depth: 0
+>     fetch-tags: true
+>  ```
 
 
 
