@@ -60,9 +60,12 @@ class GitoniumPlugin : Plugin<Project> {
      */
     private fun registerPrintVersionTask(project: Project) {
         project.tasks.register("printVersion") {
-            println(project.version)
             group = "Help"
             description = "Prints the current version of $project."
+
+            doLast {
+                println(project.version)
+            }
         }
     }
 
