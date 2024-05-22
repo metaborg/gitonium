@@ -13,17 +13,15 @@ class GitoniumPlugin : Plugin<Project> {
         val extension = GitoniumExtension(project)
         project.extensions.add("gitonium", extension)
 
-        // Set project and subproject versions
+        // Set project version
         project.version = LazyGitoniumVersion(extension, false)
-        project.subprojects.forEach {
-            it.version = LazyGitoniumVersion(extension, true)
-        }
 
         // Register tasks
         registerCheckSnapshotDependenciesTask(project, extension)
         registerPrintVersionTask(project)
         registerAssertNotDirtyTask(project)
         project.subprojects.forEach {
+            it.version = LazyGitoniumVersion(extension, true)
             registerCheckSnapshotDependenciesTask(it, extension)
             registerPrintVersionTask(it)
             registerAssertNotDirtyTask(it)
