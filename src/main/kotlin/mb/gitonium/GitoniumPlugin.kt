@@ -42,6 +42,10 @@ class GitoniumPlugin : Plugin<Project> {
     private fun registerCheckSnapshotDependenciesTask(project: Project, extension: GitoniumExtension) {
         if (!extension.checkSnapshotDependenciesInRelease) return
         val checkTask = project.tasks.register<CheckSnapshotDependencies>("checkSnapshotDependencies", extension)
+        project.tasks.named("checkSnapshotDependencies") {
+            group = "Verification"
+            description = "Asserts that there are no snapshot dependencies used in $project."
+        }
         project.pluginManager.withPlugin("maven-publish") {
             project.tasks.named("publish") {
                 dependsOn(checkTask)
@@ -57,6 +61,8 @@ class GitoniumPlugin : Plugin<Project> {
     private fun registerPrintVersionTask(project: Project) {
         project.tasks.register("printVersion") {
             println(project.version)
+            group = "Help"
+            description = "Prints the current version of $project."
         }
     }
 
@@ -70,6 +76,9 @@ class GitoniumPlugin : Plugin<Project> {
         val assertNotDirty = project.tasks.register("assertNotDirty") {
             if (project.version.toString().endsWith(".dirty")) {
                 throw GradleException("Cannot publish a dirty version: ${project.version}")
+            group = "Verification"
+            description = "Asserts that there are no uncommitted changes in $project."
+
         project.pluginManager.withPlugin("maven-publish") {
             project.tasks.named("publish") {
                 dependsOn(assertNotDirty)
