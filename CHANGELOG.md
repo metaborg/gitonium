@@ -3,6 +3,9 @@ All notable changes to this project are documented in this file, based on [Keep 
 
 
 ## [Unreleased]
+
+
+## [1.1.0] - 2024-05-22
 ### Fixed
 - Plugin can now be used without applying `maven-publish`.
 - Fix `assertNotDirty` not detecting dirty versions properly.
@@ -31,6 +34,7 @@ All notable changes to this project are documented in this file, based on [Keep 
 - `Project.DEFAULT_VERSION` (`"unspecified"`) is assigned as version if no Git repository is found, instead of failing.
 
 
-[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.0.0...HEAD
+[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.1.0...HEAD
+[1.1.0]: https://github.com/metaborg/gitonium/compare/release-1.0.0...release-1.1.0
 [1.0.0]: https://github.com/metaborg/gitonium/compare/release-0.1.5...release-1.0.0
 [0.1.5]: https://github.com/metaborg/gitonium/compare/release-0.1.4...release-0.1.5
