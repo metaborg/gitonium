@@ -47,7 +47,11 @@ class NativeGitRepo(
     }
 
     @Throws(IOException::class)
-    override fun getTagDescription(vararg patterns: String, withHash: Boolean): String {
+    override fun getTagDescription(
+        vararg patterns: String,
+        withHash: Boolean,
+        firstParentOnly: Boolean,
+    ): String {
         if (withHash) {
             return runGitCommand(
                 "describe",
@@ -57,6 +61,9 @@ class NativeGitRepo(
                 "--abbrev=7",
                 // Just the abbreviated commit hash if no tag is found
                 "--always",
+                // Follow only the first parent of merge commits
+                *(if (firstParentOnly) listOf("--first-parent") else emptyList()).toTypedArray(),
+                // Match the pattern
                 *patterns.map { "--match=$it" }.toTypedArray(),
                 "HEAD",
             )
@@ -68,6 +75,9 @@ class NativeGitRepo(
                     "--tags",
                     // Leave out the commit hash
                     "--abbrev=0",
+                    // Follow only the first parent of merge commits
+                    *(if (firstParentOnly) listOf("--first-parent") else emptyList()).toTypedArray(),
+                    // Match the pattern
                     *patterns.map { "--match=$it" }.toTypedArray(),
                     "HEAD",
                 )

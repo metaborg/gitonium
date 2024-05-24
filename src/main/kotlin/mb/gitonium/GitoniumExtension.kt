@@ -37,6 +37,8 @@ open class GitoniumExtension(private val project: Project) {
     var snapshotSuffix: String = "-SNAPSHOT"
     /** Whether to include the branch name in snapshot versions. */
     var snapshotIncludeBranch: Boolean = true
+    /** Whether to consider the first parent only when looking for tags across merge commits. */
+    var firstParentOnly: Boolean = false
 
     /** Whether to set the version on the root project. */
     var setVersion: Boolean = true
@@ -66,6 +68,7 @@ open class GitoniumExtension(private val project: Project) {
             snapshotPatchIncrease,
             snapshotSuffix,
             snapshotIncludeBranch,
+            firstParentOnly,
         )
     }
 

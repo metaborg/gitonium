@@ -42,11 +42,13 @@ data class GitoniumVersion(
             snapshotSuffix: String = "-SNAPSHOT",
             /** Whether to include the branch name in snapshot versions. */
             snapshotIncludeBranch: Boolean = true,
+            /** Whether to check for SNAPSHOT dependencies when publishing a release. */
+            firstParentOnly: Boolean = false,
         ): GitoniumVersion {
 
             val repo = getGitRepo(repoDirectory) ?: throw IOException("No Git repository found at $repoDirectory.")
 
-            val (tagVersion, isSnapshot) = repo.getCurrentVersion(tagPrefix)
+            val (tagVersion, isSnapshot) = repo.getCurrentVersion(tagPrefix, firstParentOnly)
             val actualTagVersion = if (tagVersion != null && isSnapshot) tagVersion.copy(
                 major = tagVersion.major + snapshotMajorIncrease,
                 minor = tagVersion.minor + snapshotMinorIncrease,
@@ -106,28 +108,31 @@ data class GitoniumVersion(
         }
 
         /** The release version tag on the current commit, if any; otherwise `null`. */
-        private fun GitRepo.getReleaseTagVersion(tagPrefix: String): String? {
+        private fun GitRepo.getReleaseTagVersion(tagPrefix: String, firstParentOnly: Boolean): String? {
             // If the HEAD points to a commit with a release version tag,
             //  the output of `git describe` _with hash_ will not include a hash
             //  and therefore be equal to the output of `git describe` _without hash).
-            val tag = getRecentReleaseTagVersion(tagPrefix) ?: return null
+            val tag = getRecentReleaseTagVersion(tagPrefix, firstParentOnly) ?: return null
             val commitDescription = getTagDescription("$tagPrefix*", withHash = true)
             return tag.takeIf { it == commitDescription }
         }
 
         /** The most recent release version tag (not necessarily on the current commit), if any; otherwise, `null`. */
-        private fun GitRepo.getRecentReleaseTagVersion(tagPrefix: String): String? {
-            return getTagDescription("$tagPrefix*", withHash = false).takeIf { it.isNotBlank() }
+        private fun GitRepo.getRecentReleaseTagVersion(tagPrefix: String, firstParentOnly: Boolean): String? {
+            return getTagDescription("$tagPrefix*", withHash = false, firstParentOnly = firstParentOnly)
+                .takeIf { it.isNotBlank() }
         }
 
         /** Gets the current (snapshot) version of a repository. */
-        private fun GitRepo.getCurrentVersion(tagPrefix: String): Pair<SemanticVersion?, Boolean> {
-            val releaseTagVersionStr = getReleaseTagVersion(tagPrefix)?.substringAfter(tagPrefix)
+        private fun GitRepo.getCurrentVersion(tagPrefix: String, firstParentOnly: Boolean): Pair<SemanticVersion?, Boolean> {
+            val releaseTagVersionStr = getReleaseTagVersion(tagPrefix, firstParentOnly)
+                ?.substringAfter(tagPrefix)
             val isSnapshot: Boolean
             val tagVersion = if (releaseTagVersionStr == null) {
                 // The HEAD does not have a release version tag
                 isSnapshot = true
-                val recentTagVersionStr = getRecentReleaseTagVersion(tagPrefix)?.substringAfter(tagPrefix) ?: return (null to isSnapshot)
+                val recentTagVersionStr = getRecentReleaseTagVersion(tagPrefix, firstParentOnly)
+                    ?.substringAfter(tagPrefix) ?: return (null to isSnapshot)
                 val tagVersion = SemanticVersion.of(recentTagVersionStr) ?: return (null to isSnapshot)
                 // Increment the version, such that Gradle accepts this version as _newer_ than the last release version.
                 tagVersion
