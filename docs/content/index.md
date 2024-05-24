@@ -38,14 +38,14 @@ Apply the gitonium plugin to a project (a `build.gradle(.kts)` file) as follows:
 === "Kotlin"
     ```kotlin title="build.gradle.kts"
     plugins {
-        id("org.metaborg.gitonium") version "0.1.5"
+        id("org.metaborg.gitonium") version "1.2.0"
     }
     ```
 
 === "Groovy"
     ```groovy title="build.gradle"
     plugins {
-        id "org.metaborg.gitonium" version "0.1.5"
+        id "org.metaborg.gitonium" version "1.2.0"
     }
     ```
 
