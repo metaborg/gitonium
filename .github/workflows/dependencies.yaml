@@ -8,4 +8,4 @@ on:  # yamllint disable-line rule:truthy
 
 jobs:
   build:
-    uses: metaborg/workflows/.github/workflows/gradle-dependencies.yaml@main
+    uses: metaborg/actions/.github/workflows/gradle-dependencies.yaml@main
