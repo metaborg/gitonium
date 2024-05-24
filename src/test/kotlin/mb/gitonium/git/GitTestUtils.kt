@@ -71,4 +71,16 @@ object GitTestUtils {
         this.commit("Committing $actualPath")
         return actualPath
     }
+
+    /**
+     * Creates a (possibly empty) commit of all files, with the given message.
+     *
+     * @param message The message of the commit.
+     * @return The hash of the commit.
+     */
+    fun GitRepo.commitAll(message: String = "Commit ${randomName(8)}"): String {
+        this.addAll()
+        this.commit(message, allowEmpty = true)
+        return this.getCurrentCommitHash()
+    }
 }

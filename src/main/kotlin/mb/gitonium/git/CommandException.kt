@@ -13,5 +13,5 @@ class CommandException(
     /** The error message, or null to use a default message. */
     message: String? = null,
 ): IOException(
-    (message ?: "Command failed with exit code $exitCode") + if(stderr.isNotBlank()) ": $stderr" else "."
+    (message ?: "$command: Command failed with exit code $exitCode") + if(stderr.isNotBlank()) ": $stderr" else "."
 )

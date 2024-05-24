@@ -5,6 +5,7 @@ import io.kotest.engine.spec.tempdir
 import io.kotest.matchers.shouldBe
 import io.kotest.assertions.assertSoftly
 import io.kotest.assertions.throwables.shouldThrow
+import mb.gitonium.git.GitTestUtils.commitAll
 import mb.gitonium.git.GitTestUtils.commitFile
 import mb.gitonium.git.GitTestUtils.copyTestGitConfig
 import mb.gitonium.git.GitTestUtils.createEmptyRepository
@@ -57,11 +58,11 @@ class GitoniumVersionTests: FunSpec({
             }
         }
 
-        test("should return the version of the last release tag, when the HEAD points to a release tag") {
+        test("should return the version of the release tag, when the HEAD points to a release tag") {
             // Arrange
             val repo = createEmptyRepository(::buildGitRepo)
             repo.commitFile("Initial commit", "file1.txt")
-            repo.tag("release-1.0.0")
+            repo.tag("release-1.12.123")
 
             // Act
             val versionInfo = GitoniumVersion.determineVersion(
@@ -70,8 +71,8 @@ class GitoniumVersionTests: FunSpec({
 
             // Assert
             assertSoftly {
-                versionInfo.version shouldBe SemanticVersion(1, 0, 0)
-                versionInfo.versionString shouldBe "1.0.0"
+                versionInfo.version shouldBe SemanticVersion(1, 12, 123)
+                versionInfo.versionString shouldBe "1.12.123"
                 versionInfo.isDirty shouldBe false
                 versionInfo.isRelease shouldBe true
                 versionInfo.isSnapshot shouldBe false
@@ -82,7 +83,7 @@ class GitoniumVersionTests: FunSpec({
             // Arrange
             val repo = createEmptyRepository(::buildGitRepo)
             repo.commitFile("Initial commit", "file1.txt")
-            repo.tag("release-1.0.0")
+            repo.tag("release-1.12.123")
             File(repo.directory, "uncommitted.txt").writeText("uncommitted")
 
             // Act
@@ -92,8 +93,8 @@ class GitoniumVersionTests: FunSpec({
 
             // Assert
             assertSoftly {
-                versionInfo.version shouldBe SemanticVersion(1, 0, 0, listOf(), listOf("dirty"))
-                versionInfo.versionString shouldBe "1.0.0+dirty"
+                versionInfo.version shouldBe SemanticVersion(1, 12, 123, listOf(), listOf("dirty"))
+                versionInfo.versionString shouldBe "1.12.123+dirty"
                 versionInfo.isDirty shouldBe true
                 versionInfo.isRelease shouldBe true
                 versionInfo.isSnapshot shouldBe false
@@ -104,7 +105,7 @@ class GitoniumVersionTests: FunSpec({
             // Arrange
             val repo = createEmptyRepository(::buildGitRepo)
             repo.commitFile("Initial commit", "file1.txt")
-            repo.tag("release-1.0.0")
+            repo.tag("release-1.12.123")
             repo.commitFile("Second commit", "file2.txt")
 
             // Act
@@ -114,8 +115,8 @@ class GitoniumVersionTests: FunSpec({
 
             // Assert
             assertSoftly {
-                versionInfo.version shouldBe SemanticVersion(1, 0, 1, listOf("main-SNAPSHOT"))
-                versionInfo.versionString shouldBe "1.0.1-main-SNAPSHOT"
+                versionInfo.version shouldBe SemanticVersion(1, 12, 124, listOf("main-SNAPSHOT"))
+                versionInfo.versionString shouldBe "1.12.124-main-SNAPSHOT"
                 versionInfo.isDirty shouldBe false
                 versionInfo.isRelease shouldBe false
                 versionInfo.isSnapshot shouldBe true
@@ -126,7 +127,7 @@ class GitoniumVersionTests: FunSpec({
             // Arrange
             val repo = createEmptyRepository(::buildGitRepo)
             repo.commitFile("Initial commit", "file1.txt")
-            repo.tag("release-1.0.0")
+            repo.tag("release-1.12.123")
             repo.commitFile("Second commit", "file2.txt")
             File(repo.directory, "uncommitted.txt").writeText("uncommitted")
 
@@ -137,8 +138,8 @@ class GitoniumVersionTests: FunSpec({
 
             // Assert
             assertSoftly {
-                versionInfo.version shouldBe SemanticVersion(1, 0, 1, listOf("main-SNAPSHOT"), listOf("dirty"))
-                versionInfo.versionString shouldBe "1.0.1-main-SNAPSHOT+dirty"
+                versionInfo.version shouldBe SemanticVersion(1, 12, 124, listOf("main-SNAPSHOT"), listOf("dirty"))
+                versionInfo.versionString shouldBe "1.12.124-main-SNAPSHOT+dirty"
                 versionInfo.isDirty shouldBe true
                 versionInfo.isRelease shouldBe false
                 versionInfo.isSnapshot shouldBe true

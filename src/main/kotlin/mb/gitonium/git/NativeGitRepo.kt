@@ -102,8 +102,11 @@ class NativeGitRepo(
     }
 
     @Throws(IOException::class)
-    override fun commit(message: String) {
-        runGitCommand("commit", "-m", message)
+    override fun commit(message: String, allowEmpty: Boolean) {
+        runGitCommand("commit",
+            "-m", message,
+            *(if (allowEmpty) listOf("--allow-empty") else emptyList()).toTypedArray()
+        )
     }
 
     @Throws(IOException::class)

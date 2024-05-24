@@ -107,9 +107,10 @@ interface GitRepo {
      * This is equivalent to `git commit -m <message>`.
      *
      * @param message The commit message.
+     * @param allowEmpty Whether to allow an empty commit.
      */
     @Throws(IOException::class)
-    fun commit(message: String)
+    fun commit(message: String, allowEmpty: Boolean = false)
 
     /**
      * Detach HEAD at the tip of the current branch.
