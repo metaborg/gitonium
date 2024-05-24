@@ -55,8 +55,6 @@ class NativeGitRepo(
                 "--tags",
                 // Abbreviate the commit hash to 7 or more characters (however many are needed to make it unique)
                 "--abbrev=7",
-                // Only consider the first parent of the commit when encountering a merge commit
-                "--first-parent",
                 // Just the abbreviated commit hash if no tag is found
                 "--always",
                 *patterns.map { "--match=$it" }.toTypedArray(),
@@ -70,8 +68,6 @@ class NativeGitRepo(
                     "--tags",
                     // Leave out the commit hash
                     "--abbrev=0",
-                    // Only consider the first parent of the commit when encountering a merge commit
-                    "--first-parent",
                     *patterns.map { "--match=$it" }.toTypedArray(),
                     "HEAD",
                 )

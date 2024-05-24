@@ -3,6 +3,7 @@ All notable changes to this project are documented in this file, based on [Keep 
 
 
 ## [Unreleased]
+- Consider all branches for tags.
 
 
 ## [1.1.0] - 2024-05-22
