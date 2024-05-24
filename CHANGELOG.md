@@ -3,6 +3,8 @@ All notable changes to this project are documented in this file, based on [Keep 
 
 
 ## [Unreleased]
+
+## [1.2.0] - 2024-05-24
 - By default, consider all branches for tags when finding a merge commit. Configurable with `firstParentOnly`.
 
 
