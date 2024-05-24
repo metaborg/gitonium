@@ -13,4 +13,13 @@ on:  # yamllint disable-line rule:truthy
 
 jobs:
   build:
-    uses: metaborg/workflows/.github/workflows/gradle-build-matrix.yaml@v1
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        java-version: [11]
+        gradle-version: ["wrapper", "7.6.4", "8.6", "current"]
+    uses: metaborg/workflows/.github/workflows/gradle-build.yaml@v1
+    with:
+      os: ${{ matrix.os }}
+      java-version: ${{ matrix.java }}
+      gradle-version: ${{ matrix.gradle }}
