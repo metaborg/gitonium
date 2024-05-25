@@ -20,7 +20,7 @@ open class CheckSnapshotDependencies @Inject constructor(
             configuration.allDependencies.mapNotNull { dependency ->
                 val version = dependency.version // Assign to local val to enable smart cast.
                 if (version != null && version.endsWith("-SNAPSHOT")) {
-                    "${dependency.group}:${dependency.name}:${dependency.version}"
+                    "$project/$configuration: ${dependency.group}:${dependency.name}:${dependency.version}"
                 } else {
                     null
                 }
