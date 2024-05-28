@@ -44,11 +44,14 @@ data class GitoniumVersion(
             snapshotIncludeBranch: Boolean = true,
             /** Whether to check for SNAPSHOT dependencies when publishing a release. */
             firstParentOnly: Boolean = false,
+            /** Whether to always create a snapshot version string, even if the HEAD points to a release tag. */
+            alwaysSnapshot: Boolean = false,
         ): GitoniumVersion {
 
             val repo = getGitRepo(repoDirectory) ?: throw IOException("No Git repository found at $repoDirectory.")
 
-            val (tagVersion, isSnapshot) = repo.getCurrentVersion(tagPrefix, firstParentOnly)
+            val (tagVersion, tagIsSnapshot) = repo.getCurrentVersion(tagPrefix, firstParentOnly)
+            val isSnapshot = tagIsSnapshot || alwaysSnapshot
             val actualTagVersion = if (tagVersion != null && isSnapshot) tagVersion.copy(
                 major = tagVersion.major + snapshotMajorIncrease,
                 minor = tagVersion.minor + snapshotMinorIncrease,

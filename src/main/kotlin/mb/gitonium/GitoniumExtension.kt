@@ -47,6 +47,9 @@ open class GitoniumExtension(private val project: Project) {
     /** Whether to check for SNAPSHOT dependencies when publishing a release. */
     var checkSnapshotDependenciesInRelease: Boolean = true
 
+    /** Whether to always create a snapshot version string, even if the HEAD points to a release tag. */
+    var alwaysSnapshotVersion: Boolean = false
+
     /** The version info, determined lazily. */
     val versionInfo: GitoniumVersion by lazy {
         @Suppress("DEPRECATION") val prefix = tagPattern?.let {
@@ -69,6 +72,7 @@ open class GitoniumExtension(private val project: Project) {
             snapshotSuffix,
             snapshotIncludeBranch,
             firstParentOnly,
+            alwaysSnapshotVersion,
         )
     }
 

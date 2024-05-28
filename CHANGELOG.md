@@ -3,6 +3,9 @@ All notable changes to this project are documented in this file, based on [Keep 
 
 
 ## [Unreleased]
+- Add the `alwaysSnapshotVersion` option to `gitonium` to always create a snapshot version, even if HEAD points at a release tag.
+  This can be used, for example, to create nightly snapshots.
+
 
 ## [1.2.0] - 2024-05-24
 - By default, consider all branches for tags when finding a merge commit. Configurable with `firstParentOnly`.
