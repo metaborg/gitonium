@@ -101,6 +101,14 @@ publishing {
                 password = project.findProperty("publish.repository.metaborg.artifacts.password") as String? ?: System.getenv("METABORG_ARTIFACTS_PASSWORD")
             }
         }
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/metaborg/gitonium")
+            credentials {
+                username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.publishKey") as String? ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 }
 
