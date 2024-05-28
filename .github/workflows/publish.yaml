@@ -1,0 +1,25 @@
+---
+name: 'Publish'
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    tags:
+      - "release-*.*.*"
+
+jobs:
+  build:
+    uses: metaborg/actions/.github/workflows/gradle-publish.yaml@main
+    with:
+      os: 'ubuntu-latest'
+      java-version: '11'
+      java-distribution: 'temurin'
+      gradle-version: 'wrapper'
+      gradle-build-scan-publish: false
+      gradle-command: |
+        gradle assemble publish
+    secrets:
+      METABORG_ARTIFACTS_USERNAME: ${{ secrets.METABORG_ARTIFACTS_USERNAME }}
+      METABORG_ARTIFACTS_PASSWORD: ${{ secrets.METABORG_ARTIFACTS_PASSWORD }}
+      # SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+      # SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+      # SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
