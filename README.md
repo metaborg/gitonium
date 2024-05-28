@@ -1,7 +1,6 @@
 # Gitonium
 [![Build][github-build-badge]][github-build]
 [![License][license-badge]][license]
-[![Maven Release][maven-release-badge]][maven-release]
 [![GitHub Release][github-release-badge]][github-release]
 
 Gitonium is a Gradle plugin for automatic versioning based on the current Git branch and/or tag.
