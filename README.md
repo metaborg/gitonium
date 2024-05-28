@@ -6,6 +6,11 @@
 
 Gitonium is a Gradle plugin for automatic versioning based on the current Git branch and/or tag.
 
+| Artifact                        | Latest Release                                       |
+|---------------------------------|------------------------------------------------------|
+| `org.metaborg.gitonium`         | [![org.metaborg.gitonium][maven-badge]][maven]       |
+
+
 
 ## Requirements
 Gradle 7 or higher is required. The code snippets in this README assume you are using Gradle with Kotlin, but should be translatable to Groovy as well.
@@ -66,11 +71,13 @@ Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an **"as is" basis, without warranties or conditions of any kind**, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 
-[github-build-badge]: https://github.com/metaborg/gitonium/actions/workflows/build.yaml/badge.svg
+[github-build-badge]: https://img.shields.io/github/actions/workflow/status/metaborg/gitonium/build.yaml
 [github-build]: https://github.com/metaborg/gitonium/actions
 [license-badge]: https://img.shields.io/github/license/metaborg/gitonium
 [license]: https://github.com/metaborg/gitonium/blob/main/LICENSE
-[maven-release-badge]: https://img.shields.io/maven-metadata/v?label=maven-release&metadataUrl=https%3A%2F%2Fartifacts.metaborg.org%2Fcontent%2Frepositories%2Freleases%2Forg%2Fmetaborg%2Fgitonium%2Fmaven-metadata.xml
-[maven-release]: https://mvnrepository.com/artifact/org.metaborg/gitonium
 [github-release-badge]: https://img.shields.io/github/v/release/metaborg/gitonium
 [github-release]: https://github.com/metaborg/gitonium/releases
+
+[maven-badge]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fartifacts.metaborg.org%2Fcontent%2Frepositories%2Freleases%2Forg%2Fmetaborg%2Fgitonium%2Fmaven-metadata.xml
+[maven]: https://artifacts.metaborg.org/#nexus-search;gav~org.metaborg~gitonium~~~
+
