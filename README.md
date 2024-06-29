@@ -2,13 +2,15 @@
 [![Build][github-build-badge]][github-build]
 [![License][license-badge]][license]
 [![GitHub Release][github-release-badge]][github-release]
+[![Documentation][documentation-badge]][documentation]
 
 Gitonium is a Gradle plugin for automatic versioning based on the current Git branch and/or tag.
+
+[![Documentation][documentation-button]][documentation]
 
 | Artifact                        | Latest Release                                       |
 |---------------------------------|------------------------------------------------------|
 | `org.metaborg.gitonium`         | [![org.metaborg.gitonium][maven-badge]][maven]       |
-
 
 
 ## Requirements
@@ -76,6 +78,9 @@ Unless required by applicable law or agreed to in writing, software distributed 
 [license]: https://github.com/metaborg/gitonium/blob/main/LICENSE
 [github-release-badge]: https://img.shields.io/github/v/release/metaborg/gitonium
 [github-release]: https://github.com/metaborg/gitonium/releases
+[documentation-badge]: https://img.shields.io/badge/docs-latest-brightgreen
+[documentation]: https://spoofax.dev/gitonium/
+[documentation-button]: https://img.shields.io/badge/Documentation-blue?style=for-the-badge&logo=googledocs&logoColor=white
 
 [maven-badge]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fartifacts.metaborg.org%2Fcontent%2Frepositories%2Freleases%2Forg%2Fmetaborg%2Fgitonium%2Fmaven-metadata.xml
 [maven]: https://artifacts.metaborg.org/#nexus-search;gav~org.metaborg~gitonium~~~
