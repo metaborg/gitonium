@@ -75,7 +75,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 [github-build-badge]: https://img.shields.io/github/actions/workflow/status/metaborg/gitonium/build.yaml
 [github-build]: https://github.com/metaborg/gitonium/actions
 [license-badge]: https://img.shields.io/github/license/metaborg/gitonium
-[license]: https://github.com/metaborg/gitonium/blob/main/LICENSE
+[license]: https://github.com/metaborg/gitonium/blob/master/LICENSE
 [github-release-badge]: https://img.shields.io/github/v/release/metaborg/gitonium
 [github-release]: https://github.com/metaborg/gitonium/releases
 [documentation-badge]: https://img.shields.io/badge/docs-latest-brightgreen
