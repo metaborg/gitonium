@@ -16,11 +16,7 @@ COPY ${TOOLS} tools/
 COPY ${REQUIREMENTS} requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt \
  && apk del .build gcc musl-dev \
- && rm -rf /tmp/* /root/.cache \
- && find ${PACKAGES} \
-      -type f \
-      -path "*/__pycache__/*" \
-      -exec rm -f {} \;
+ && rm -rf /tmp/* /root/.cache
 RUN <<FILE cat > /root/.gitconfig
 [safe]
      directory = /repo
