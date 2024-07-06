@@ -1,3 +1,4 @@
+import org.metaborg.convention.Developer
 import java.net.URI
 
 // Workaround for issue: https://youtrack.jetbrains.com/issue/KTIJ-19369
@@ -5,6 +6,8 @@ import java.net.URI
 plugins {
     `java-library`
     alias(libs.plugins.gitonium)   // Bootstrap with previous version
+    alias(libs.plugins.metaborg.convention.java)
+    alias(libs.plugins.metaborg.convention.mavenpublish)
     `kotlin-dsl`
     `java-gradle-plugin`
     `maven-publish`
@@ -26,21 +29,6 @@ dependencies {
     testImplementation  (libs.kotest.property)
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
-
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    }
-}
-
-configure<JavaPluginExtension> {
-    withSourcesJar()
-    withJavadocJar()
-}
-
 gradlePlugin {
     website.set("https://github.com/metaborg/gitonium")
     vcsUrl.set("https://github.com/metaborg/gitonium")
@@ -52,65 +40,19 @@ gradlePlugin {
     }
 }
 
-publishing {
-    afterEvaluate {
-        publications {
-            withType<MavenPublication> {
-                pom {
-                    name.set("Gitonium")
-                    description.set(project.description)
-                    url.set("https://github.com/metaborg/gitonium")
-                    inceptionYear.set("2023")
-                    licenses {
-                        // From: https://spdx.org/licenses/
-                        license {
-                            name.set("Apache-2.0")
-                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                            distribution.set("repo")
-                        }
-                    }
-                    developers {
-                        developer {
-                            id.set("gohla")
-                            name.set("Gabriel Konat")
-                            email.set("g.d.p.konat@tudelft.nl")
-                        }
-                        developer {
-                            id.set("virtlink")
-                            name.set("Daniel A. A. Pelsmaeker")
-                            email.set("d.a.a.pelsmaeker@tudelft.nl")
-                        }
-                    }
-                    scm {
-                        connection.set("scm:git@github.com:metaborg/gitonium.git")
-                        developerConnection.set("scm:git@github.com:metaborg/gitonium.git")
-                        url.set("scm:git@github.com:metaborg/gitonium.git")
-                    }
-                }
-            }
-        }
-    }
-    repositories {
-        maven {
-            val releasesRepoUrl = uri("https://artifacts.metaborg.org/content/repositories/releases/")
-            val snapshotsRepoUrl = uri("https://artifacts.metaborg.org/content/repositories/snapshots/")
-            name = "MetaborgArtifacts"
-            url = if (project.extra["isReleaseVersion"] as Boolean) releasesRepoUrl else snapshotsRepoUrl
-            credentials {
-                username = project.findProperty("publish.repository.metaborg.artifacts.username") as String? ?: System.getenv("METABORG_ARTIFACTS_USERNAME")
-                password = project.findProperty("publish.repository.metaborg.artifacts.password") as String? ?: System.getenv("METABORG_ARTIFACTS_PASSWORD")
-            }
-        }
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/metaborg/gitonium")
-            credentials {
-                username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
-                password = project.findProperty("gpr.publishKey") as String? ?: System.getenv("GITHUB_TOKEN")
-            }
-        }
+mavenPublishConvention {
+    repoOwner.set("metaborg")
+    repoName.set("gitonium")
+
+    metadata {
+        inceptionYear.set("2019")
+        developers.set(listOf(
+            Developer("gohla", "Gabriel Konat", "g.d.p.konat@tudelft.nl"),
+            Developer("virtlink", "Daniel A. A. Pelsmaeker", "d.a.a.pelsmaeker@tudelft.nl"),
+        ))
     }
 }
+
 
 
 // Normally, when you execute a task such as `test` in a multi-project build, you will execute
