@@ -14,10 +14,14 @@ data class GitoniumVersion(
     val branch: String?,
     /** The current commit ID; of `null` if it could not be determined. */
     val commit: String?,
-    /** The version string; or `null` if it could not be determined. */
+    /** The current version string; or `null` if it could not be determined. */
     val versionString: String?,
-    /** The version; or `null` if it could not be determined. */
+    /** The current version; or `null` if it could not be determined. */
     val version: SemanticVersion?,
+    /** The most recent release version string; or `null` if it could not be determined. */
+    val releaseVersionString: String?,
+    /** The most recent release version; or `null` if it could not be determined. */
+    val releaseVersion: SemanticVersion?,
     /** Whether the repository is dirty (i.e., has uncommitted changes). */
     val isDirty: Boolean,
     /** Whether the current commit has a release version tag. */
@@ -80,6 +84,8 @@ data class GitoniumVersion(
                 commit = commit,
                 versionString = version?.toString(),
                 version = version,
+                releaseVersionString = tagVersion?.toString(),
+                releaseVersion = tagVersion,
                 isDirty = repo.isDirty(),
                 isRelease = !isSnapshot
             )

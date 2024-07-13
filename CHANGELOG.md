@@ -5,6 +5,10 @@ All notable changes to this project are documented in this file, based on [Keep 
 ## [Unreleased]
 
 
+## [1.4.1] - 2024-07-14
+- Also record the latest release version in the properties file.
+
+
 ## [1.4.0] - 2024-07-14
 - Add `writeBuildProperties` task that writes build and version information to a properties file. Example usage:
   ```kotlin
@@ -53,7 +57,8 @@ All notable changes to this project are documented in this file, based on [Keep 
 - `Project.DEFAULT_VERSION` (`"unspecified"`) is assigned as version if no Git repository is found, instead of failing.
 
 
-[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.4.0...HEAD
+[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.4.1...HEAD
+[1.4.1]: https://github.com/metaborg/gitonium/compare/release-1.4.0...release-1.4.1
 [1.4.0]: https://github.com/metaborg/gitonium/compare/release-1.3.1...release-1.4.0
 [1.3.1]: https://github.com/metaborg/gitonium/compare/release-1.3.0...release-1.3.1
 [1.3.0]: https://github.com/metaborg/gitonium/compare/release-1.2.0...release-1.3.0
