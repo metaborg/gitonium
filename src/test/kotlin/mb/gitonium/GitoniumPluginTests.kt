@@ -263,4 +263,40 @@ class GitoniumPluginTests: FunSpec({
         }
     }
 
+
+    context("task :writeBuildProperties") {
+        test("should write properties file if set") {
+            // Arrange
+            val repo = createEmptyRepository(::gitRepoBuilder)
+            val buildFile = repo.directory.resolve("build.gradle.kts")
+            buildFile.writeText(
+                """
+                    plugins {
+                        `java-library`
+                        id("org.metaborg.gitonium")
+                    }
+
+                    gitonium {
+                        buildPropertiesFile.set(layout.buildDirectory.file("resources/main/version.properties"))
+                    }
+                """.trimIndent()
+            )
+            repo.writeFile("class Program { static void main(String[] args) { } }", "src/main/java/Program.java")
+            repo.addAll()
+            repo.commit("Initial commit")
+            repo.tag("release-1.2.3")
+
+
+            // Act
+            val result = GradleRunner.create()
+                .withProjectDir(repo.directory)
+                .withArguments(":build")
+                .withPluginClasspath()
+                .build()
+
+            // Assert
+            result.tasks.single { it.path == ":writeBuildProperties" }.outcome shouldBe TaskOutcome.SUCCESS
+        }
+    }
+
 })

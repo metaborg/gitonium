@@ -12,6 +12,8 @@ import java.io.IOException
 data class GitoniumVersion(
     /** The current branch name; or `null` if it could not be determined. */
     val branch: String?,
+    /** The current commit ID; of `null` if it could not be determined. */
+    val commit: String?,
     /** The version string; or `null` if it could not be determined. */
     val versionString: String?,
     /** The version; or `null` if it could not be determined. */
@@ -60,6 +62,7 @@ data class GitoniumVersion(
 
             // Determine the current branch name
             val branch = if (isSnapshot && snapshotIncludeBranch) repo.getCurrentBranchOrNull() else null
+            val commit = repo.getCurrentCommitHashOrNull()
             val snapshotVersionSuffix = if (isSnapshot) { "${branch ?: ""}$snapshotSuffix".ifBlank { null } } else null
             val dirtyVersionSuffix = if (repo.isDirty()) dirtySuffix.ifBlank { null } else null
 
@@ -74,6 +77,7 @@ data class GitoniumVersion(
             }
             return GitoniumVersion(
                 branch = branch,
+                commit = commit,
                 versionString = version?.toString(),
                 version = version,
                 isDirty = repo.isDirty(),
@@ -150,6 +154,14 @@ data class GitoniumVersion(
         private fun GitRepo.getCurrentBranchOrNull(): String? {
             return try {
                 getCurrentBranch()
+            } catch (ex: IOException) {
+                null
+            }
+        }
+
+        private fun GitRepo.getCurrentCommitHashOrNull(): String? {
+            return try {
+                getCurrentCommitHash()
             } catch (ex: IOException) {
                 null
             }

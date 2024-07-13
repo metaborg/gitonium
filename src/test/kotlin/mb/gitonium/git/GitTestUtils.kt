@@ -56,7 +56,9 @@ object GitTestUtils {
      */
     fun GitRepo.writeFile(contents: String, path: String? = null): String {
         val actualPath = path ?: (randomName(8) + ".txt")
-        File(this.directory, actualPath).writeText(contents)
+        val file = File(this.directory, actualPath)
+        file.parentFile.mkdirs()
+        file.writeText(contents)
         return actualPath
     }
 

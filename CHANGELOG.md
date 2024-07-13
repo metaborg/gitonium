@@ -4,13 +4,21 @@ All notable changes to this project are documented in this file, based on [Keep 
 
 ## [Unreleased]
 
+
+## [1.4.0] - 2024-07-14
+- Add `writeBuildProperties` task that writes build and version information to a properties file. Example usage:
+  ```kotlin
+  gitonium {
+      buildPropertiesFile.set(layout.buildDirectory.file("resources/main/version.properties"))
+  }
+  ```
+
 ## [1.3.1] - 2024-05-28
 - No changes.
 
 ## [1.3.0] - 2024-05-28
 - Add the `alwaysSnapshotVersion` option to `gitonium` to always create a snapshot version, even if HEAD points at a release tag.
   This can be used, for example, to create nightly snapshots.
-
 
 ## [1.2.0] - 2024-05-24
 - By default, consider all branches for tags when finding a merge commit. Configurable with `firstParentOnly`.
@@ -45,7 +53,8 @@ All notable changes to this project are documented in this file, based on [Keep 
 - `Project.DEFAULT_VERSION` (`"unspecified"`) is assigned as version if no Git repository is found, instead of failing.
 
 
-[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.3.1...HEAD
+[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.4.0...HEAD
+[1.4.0]: https://github.com/metaborg/gitonium/compare/release-1.3.1...release-1.4.0
 [1.3.1]: https://github.com/metaborg/gitonium/compare/release-1.3.0...release-1.3.1
 [1.3.0]: https://github.com/metaborg/gitonium/compare/release-1.2.0...release-1.3.0
 [1.2.0]: https://github.com/metaborg/gitonium/compare/release-1.1.0...release-1.2.0
