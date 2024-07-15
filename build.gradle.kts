@@ -6,8 +6,8 @@ import java.net.URI
 plugins {
     `java-library`
     alias(libs.plugins.gitonium)   // Bootstrap with previous version
-    alias(libs.plugins.metaborg.convention.java)
-    alias(libs.plugins.metaborg.convention.mavenpublish)
+    id("org.metaborg.convention.java")
+    id("org.metaborg.convention.maven-publish")
     `kotlin-dsl`
     `java-gradle-plugin`
     `maven-publish`
