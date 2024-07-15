@@ -2,7 +2,7 @@ import org.metaborg.convention.Developer
 
 plugins {
     `java-library`
-    id("org.metaborg.gitonium") version "1.5.2"   // Bootstrap with a previous version
+    id("org.metaborg.gitonium") version "1.5.3"   // Bootstrap with a previous version
     id("org.metaborg.convention.java")
     id("org.metaborg.convention.maven-publish")
     `kotlin-dsl`
