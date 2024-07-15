@@ -5,6 +5,10 @@ All notable changes to this project are documented in this file, based on [Keep 
 ## [Unreleased]
 
 
+## [1.5.3] - 2024-07-15
+- A dirty repo is a snapshot repo.
+
+
 ## [1.5.2] - 2024-07-15
 - Fix Gitonium extension properties being read too eagerly.
 
@@ -70,7 +74,9 @@ All notable changes to this project are documented in this file, based on [Keep 
 - `Project.DEFAULT_VERSION` (`"unspecified"`) is assigned as version if no Git repository is found, instead of failing.
 
 
-[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.5.1...HEAD
+[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.5.3...HEAD
+[1.5.3]: https://github.com/metaborg/gitonium/compare/release-1.5.2...release-1.5.3
+[1.5.2]: https://github.com/metaborg/gitonium/compare/release-1.5.1...release-1.5.2
 [1.5.1]: https://github.com/metaborg/gitonium/compare/release-1.5.0...release-1.5.1
 [1.5.0]: https://github.com/metaborg/gitonium/compare/release-1.4.1...release-1.5.0
 [1.4.1]: https://github.com/metaborg/gitonium/compare/release-1.4.0...release-1.4.1
