@@ -135,4 +135,14 @@ interface GitRepo {
     @Throws(IOException::class)
     fun tag(tagName: String)
 
+    /**
+     * Creates a new branch with the specified name.
+     *
+     * This is equivalent to `git switch --create <branchName>`.
+     *
+     * @param branchName The name of the branch.
+     */
+    @Throws(IOException::class)
+    fun createBranch(branchName: String)
+
 }

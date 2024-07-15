@@ -5,6 +5,10 @@ All notable changes to this project are documented in this file, based on [Keep 
 ## [Unreleased]
 
 
+## [1.5.0] - 2024-07-15
+- Don't include branch in snapshot version if it is the main branch (configurable with the `mainBranch` property).
+
+
 ## [1.4.1] - 2024-07-14
 - Also record the latest release version in the properties file.
 

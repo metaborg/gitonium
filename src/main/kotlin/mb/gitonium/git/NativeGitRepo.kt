@@ -126,6 +126,11 @@ class NativeGitRepo(
         runGitCommand("tag", tagName)
     }
 
+    @Throws(IOException::class)
+    override fun createBranch(branchName: String) {
+        runGitCommand("switch", "--create", branchName)
+    }
+
     /**
      * Runs a Git command.
      *

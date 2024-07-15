@@ -104,6 +104,7 @@ class GitoniumVersionTests: FunSpec({
         test("should return the snapshot version ahead of the last release tag, when the HEAD points to a commit after a release tag") {
             // Arrange
             val repo = createEmptyRepository(::buildGitRepo)
+            repo.createBranch("develop")
             repo.commitFile("Initial commit", "file1.txt")
             repo.tag("release-1.12.123")
             repo.commitFile("Second commit", "file2.txt")
@@ -115,8 +116,30 @@ class GitoniumVersionTests: FunSpec({
 
             // Assert
             assertSoftly {
-                versionInfo.version shouldBe SemanticVersion(1, 12, 124, listOf("main-SNAPSHOT"))
-                versionInfo.versionString shouldBe "1.12.124-main-SNAPSHOT"
+                versionInfo.version shouldBe SemanticVersion(1, 12, 124, listOf("develop-SNAPSHOT"))
+                versionInfo.versionString shouldBe "1.12.124-develop-SNAPSHOT"
+                versionInfo.isDirty shouldBe false
+                versionInfo.isRelease shouldBe false
+                versionInfo.isSnapshot shouldBe true
+            }
+        }
+
+        test("should return the snapshot version ahead of the last release tag, when the HEAD points to a commit after a release tag on the main branch") {
+            // Arrange
+            val repo = createEmptyRepository(::buildGitRepo)
+            repo.commitFile("Initial commit", "file1.txt")
+            repo.tag("release-1.12.123")
+            repo.commitFile("Second commit", "file2.txt")
+
+            // Act
+            val versionInfo = GitoniumVersion.determineVersion(
+                repoDirectory = repo.directory,
+            )
+
+            // Assert
+            assertSoftly {
+                versionInfo.version shouldBe SemanticVersion(1, 12, 124, listOf("SNAPSHOT"))
+                versionInfo.versionString shouldBe "1.12.124-SNAPSHOT"
                 versionInfo.isDirty shouldBe false
                 versionInfo.isRelease shouldBe false
                 versionInfo.isSnapshot shouldBe true
@@ -138,8 +161,8 @@ class GitoniumVersionTests: FunSpec({
 
             // Assert
             assertSoftly {
-                versionInfo.version shouldBe SemanticVersion(1, 12, 124, listOf("main-SNAPSHOT"), listOf("dirty"))
-                versionInfo.versionString shouldBe "1.12.124-main-SNAPSHOT+dirty"
+                versionInfo.version shouldBe SemanticVersion(1, 12, 124, listOf("SNAPSHOT"), listOf("dirty"))
+                versionInfo.versionString shouldBe "1.12.124-SNAPSHOT+dirty"
                 versionInfo.isDirty shouldBe true
                 versionInfo.isRelease shouldBe false
                 versionInfo.isSnapshot shouldBe true

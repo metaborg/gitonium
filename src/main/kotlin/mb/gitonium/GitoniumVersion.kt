@@ -45,13 +45,15 @@ data class GitoniumVersion(
             /** The patch increase for snapshot versions. */
             snapshotPatchIncrease: Int = 1,
             /** The suffix to use for snapshot versions; or an empty string to use no suffix. */
-            snapshotSuffix: String = "-SNAPSHOT",
+            snapshotSuffix: String = "SNAPSHOT",
             /** Whether to include the branch name in snapshot versions. */
             snapshotIncludeBranch: Boolean = true,
             /** Whether to check for SNAPSHOT dependencies when publishing a release. */
             firstParentOnly: Boolean = false,
             /** Whether to always create a snapshot version string, even if the HEAD points to a release tag. */
             alwaysSnapshot: Boolean = false,
+            /** The name of the main branch. */
+            mainBranch: String? = "main",
         ): GitoniumVersion {
 
             val repo = getGitRepo(repoDirectory) ?: throw IOException("No Git repository found at $repoDirectory.")
@@ -67,7 +69,13 @@ data class GitoniumVersion(
             // Determine the current branch name
             val branch = if (isSnapshot && snapshotIncludeBranch) repo.getCurrentBranchOrNull() else null
             val commit = repo.getCurrentCommitHashOrNull()
-            val snapshotVersionSuffix = if (isSnapshot) { "${branch ?: ""}$snapshotSuffix".ifBlank { null } } else null
+            val snapshotVersionSuffix = if (isSnapshot) buildString {
+                if (branch != mainBranch) append(branch ?: "")
+                if (snapshotSuffix.isNotBlank()) {
+                    if (isNotEmpty()) append("-")
+                    append(snapshotSuffix)
+                }
+            }.ifBlank { null } else null
             val dirtyVersionSuffix = if (repo.isDirty()) dirtySuffix.ifBlank { null } else null
 
             val version = actualTagVersion?.let {

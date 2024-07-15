@@ -2,7 +2,9 @@ package mb.gitonium
 
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 import org.gradle.internal.enterprise.test.FileProperty
+import org.gradle.kotlin.dsl.property
 import java.util.regex.Pattern
 
 /** Extension for configuring the Gitonium plugin. */
@@ -52,6 +54,9 @@ open class GitoniumExtension(private val project: Project) {
     /** Whether to always create a snapshot version string, even if the HEAD points to a release tag. */
     var alwaysSnapshotVersion: Boolean = false
 
+    /** The name of the main branch. */
+    val mainBranch: Property<String> = project.objects.property<String>()
+
     /** A properties file to write the build and version info to, or unset to not write. */
     val buildPropertiesFile: RegularFileProperty = project.objects.fileProperty()
 
@@ -78,6 +83,7 @@ open class GitoniumExtension(private val project: Project) {
             snapshotIncludeBranch,
             firstParentOnly,
             alwaysSnapshotVersion,
+            mainBranch.getOrNull(),
         )
     }
 
