@@ -5,6 +5,11 @@ All notable changes to this project are documented in this file, based on [Keep 
 ## [Unreleased]
 
 
+## [1.5.1] - 2024-07-15
+- Small fix to extension conventions.
+- Default value for `SNAPSHOT` suffix should not be preceded with a dash.
+
+
 ## [1.5.0] - 2024-07-15
 - Don't include branch in snapshot version if it is the main branch (configurable with the `mainBranch` property).
 
@@ -61,7 +66,9 @@ All notable changes to this project are documented in this file, based on [Keep 
 - `Project.DEFAULT_VERSION` (`"unspecified"`) is assigned as version if no Git repository is found, instead of failing.
 
 
-[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.4.1...HEAD
+[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.5.1...HEAD
+[1.5.1]: https://github.com/metaborg/gitonium/compare/release-1.5.0...release-1.5.1
+[1.5.0]: https://github.com/metaborg/gitonium/compare/release-1.4.1...release-1.5.0
 [1.4.1]: https://github.com/metaborg/gitonium/compare/release-1.4.0...release-1.4.1
 [1.4.0]: https://github.com/metaborg/gitonium/compare/release-1.3.1...release-1.4.0
 [1.3.1]: https://github.com/metaborg/gitonium/compare/release-1.3.0...release-1.3.1
