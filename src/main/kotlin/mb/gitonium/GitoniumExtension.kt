@@ -1,6 +1,7 @@
 package mb.gitonium
 
 import org.gradle.api.Project
+import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.internal.enterprise.test.FileProperty
@@ -38,7 +39,7 @@ open class GitoniumExtension(private val project: Project) {
             field = value
         }
     /** The suffix to use for snapshot versions; or an empty string to use no suffix. */
-    var snapshotSuffix: String = "-SNAPSHOT"
+    var snapshotSuffix: String = "SNAPSHOT"
     /** Whether to include the branch name in snapshot versions. */
     var snapshotIncludeBranch: Boolean = true
     /** Whether to consider the first parent only when looking for tags across merge commits. */
@@ -92,8 +93,9 @@ open class GitoniumExtension(private val project: Project) {
      *
      * If the repository HEAD points to a release tag, the version is set to the tag version (e.g., `"1.0.0"`).
      * If the repository HEAD points not to a release tag, the version is set to a snapshot version
-     * that is higher than the last release version and has the branch name and `.SNAPSHOT` suffix (e.g., `"1.0.1-master-SNAPSHOT"`).
-     * If the repository is dirty, the version is suffixed with `+dirty` (e.g., `"1.0.1-master-SNAPSHOT+dirty"`).
+     * that is higher than the last release version, with the branch name (if different from the main branch)
+     * and `-SNAPSHOT` as the suffix (e.g., `"1.0.1-develop-SNAPSHOT"`).
+     * If the repository is dirty, the version is suffixed with `+dirty` (e.g., `"1.0.1-SNAPSHOT+dirty"`).
      */
     val version: String by lazy {
         val versionString = versionInfo.versionString
@@ -109,4 +111,12 @@ open class GitoniumExtension(private val project: Project) {
 
     /** Whether the repository is dirty (i.e., has uncommitted changes). */
     val isDirty: Boolean get() = versionInfo.isDirty
+
+    /**
+     * Sets the convention (default values) for the configuration extension.
+     */
+    fun setConvention() {
+        mainBranch.convention("main")
+        buildPropertiesFile.convention(null as RegularFile?)
+    }
 }

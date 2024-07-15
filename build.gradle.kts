@@ -5,7 +5,7 @@ import java.net.URI
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     `java-library`
-    alias(libs.plugins.gitonium)   // Bootstrap with previous version
+    id("org.metaborg.gitonium") version "1.5.0"   // Bootstrap with a previous version
     id("org.metaborg.convention.java")
     id("org.metaborg.convention.maven-publish")
     `kotlin-dsl`

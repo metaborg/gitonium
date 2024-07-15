@@ -15,6 +15,7 @@ class GitoniumPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         // Create and add extension
         val extension = GitoniumExtension(project)
+        extension.setConvention()
         project.extensions.add("gitonium", extension)
 
         // Set project version
