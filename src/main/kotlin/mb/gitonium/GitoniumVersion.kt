@@ -59,7 +59,7 @@ data class GitoniumVersion(
             val repo = getGitRepo(repoDirectory) ?: throw IOException("No Git repository found at $repoDirectory.")
 
             val (tagVersion, tagIsSnapshot) = repo.getCurrentVersion(tagPrefix, firstParentOnly)
-            val isSnapshot = tagIsSnapshot || alwaysSnapshot
+            val isSnapshot = tagIsSnapshot || alwaysSnapshot || repo.isDirty()
             val actualTagVersion = if (tagVersion != null && isSnapshot) tagVersion.copy(
                 major = tagVersion.major + snapshotMajorIncrease,
                 minor = tagVersion.minor + snapshotMinorIncrease,
