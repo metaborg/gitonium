@@ -6,7 +6,7 @@ All notable changes to this project are documented in this file, based on [Keep 
 
 
 ## [1.5.3] - 2024-07-15
-- A dirty repo is a snapshot repo.
+- No changes.
 
 
 ## [1.5.2] - 2024-07-15
