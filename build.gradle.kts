@@ -1,11 +1,8 @@
 import org.metaborg.convention.Developer
-import java.net.URI
 
-// Workaround for issue: https://youtrack.jetbrains.com/issue/KTIJ-19369
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     `java-library`
-    id("org.metaborg.gitonium") version "1.5.1"   // Bootstrap with a previous version
+    id("org.metaborg.gitonium") version "1.5.2"   // Bootstrap with a previous version
     id("org.metaborg.convention.java")
     id("org.metaborg.convention.maven-publish")
     `kotlin-dsl`
