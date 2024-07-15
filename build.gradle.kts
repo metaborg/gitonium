@@ -53,6 +53,9 @@ mavenPublishConvention {
     }
 }
 
+gitonium {
+    mainBranch.set("master")
+}
 
 
 // Normally, when you execute a task such as `test` in a multi-project build, you will execute
