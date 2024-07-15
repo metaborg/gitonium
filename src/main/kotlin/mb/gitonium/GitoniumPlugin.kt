@@ -3,7 +3,9 @@ package mb.gitonium
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
 import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.withType
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -14,9 +16,15 @@ import java.util.*
 class GitoniumPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         // Create and add extension
-        val extension = GitoniumExtension(project)
-        extension.setConvention()
+        val extension = GitoniumExtension(project, project.objects)
         project.extensions.add("gitonium", extension)
+
+        // Configure the version
+        // The value will be computed and cached when LazyGitoniumVersion.toString() is called for the first time.
+        project.version = LazyGitoniumVersion(extension, false)
+        project.subprojects.forEach { subproject ->
+            subproject.version = LazyGitoniumVersion(extension, true)
+        }
 
         // Register tasks
         registerCheckSnapshotDependenciesTask(project, extension)
@@ -28,19 +36,6 @@ class GitoniumPlugin : Plugin<Project> {
             registerPrintVersionTask(subproject)
             registerAssertNotDirtyTask(subproject)
             registerWriteBuildPropertiesTask(subproject, extension)
-
-            subproject.afterEvaluate {
-                if (extension.setSubprojectVersions) {
-                    subproject.version = LazyGitoniumVersion(extension, true)
-                }
-            }
-        }
-
-        project.afterEvaluate {
-            // Set project version
-            if (extension.setVersion) {
-                project.version = LazyGitoniumVersion(extension, false)
-            }
         }
     }
 
@@ -51,7 +46,6 @@ class GitoniumPlugin : Plugin<Project> {
      * @param extension The Gitonium extension, used for the configuration.
      */
     private fun registerCheckSnapshotDependenciesTask(project: Project, extension: GitoniumExtension) {
-        if (!extension.checkSnapshotDependenciesInRelease) return
         val checkTask = project.tasks.register<CheckSnapshotDependencies>("checkSnapshotDependencies", extension)
         project.tasks.named("checkSnapshotDependencies") {
             group = "Verification"
@@ -60,6 +54,11 @@ class GitoniumPlugin : Plugin<Project> {
         project.pluginManager.withPlugin("maven-publish") {
             project.tasks.named("publish") {
                 dependsOn(checkTask)
+            }
+        }
+        project.gradle.taskGraph.whenReady {
+            project.tasks.withType<CheckSnapshotDependencies>().configureEach {
+                onlyIf { extension.checkSnapshotDependenciesInRelease.get() }
             }
         }
     }

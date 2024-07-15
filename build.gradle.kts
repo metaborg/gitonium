@@ -11,7 +11,14 @@ plugins {
 }
 
 
+gitonium {
+    mainBranch.set("master")
+    setVersion = false
+    setSubprojectVersions = false
+}
+
 group = "org.metaborg"
+version = gitonium.version
 description = "A Git-based versioning plugin for Gradle."
 extra["isReleaseVersion"] = !version.toString().endsWith("-SNAPSHOT")
 
@@ -48,10 +55,6 @@ mavenPublishConvention {
             Developer("virtlink", "Daniel A. A. Pelsmaeker", "d.a.a.pelsmaeker@tudelft.nl"),
         ))
     }
-}
-
-gitonium {
-    mainBranch.set("master")
 }
 
 

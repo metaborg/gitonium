@@ -6,6 +6,10 @@ All notable changes to this project are documented in this file, based on [Keep 
 
 
 ## [1.5.3] - 2024-07-15
+- The Gitonium extension now consists of only lazy properties.
+
+
+## [1.5.3] - 2024-07-15
 - No changes.
 
 

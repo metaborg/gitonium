@@ -11,8 +11,8 @@ class LazyGitoniumVersion(
 ) {
     override fun toString(): String {
         return when {
-            extension.setVersion && !isSubProject -> extension.version
-            extension.setSubprojectVersions && isSubProject -> extension.version
+            extension.setVersion.get() && !isSubProject -> extension.version
+            extension.setSubprojectVersions.get() && isSubProject -> extension.version
             else -> Project.DEFAULT_VERSION
         }
     }

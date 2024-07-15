@@ -38,14 +38,47 @@ Apply the gitonium plugin to a project (a `build.gradle(.kts)` file) as follows:
 === "Kotlin"
     ```kotlin title="build.gradle.kts"
     plugins {
-        id("org.metaborg.gitonium") version "1.3.1"
+        id("org.metaborg.gitonium") version "<version>"
     }
+
+    version = gitonium.version
     ```
 
 === "Groovy"
     ```groovy title="build.gradle"
     plugins {
-        id "org.metaborg.gitonium" version "1.3.1"
+        id "org.metaborg.gitonium" version "<version>"
     }
+
+    version = gitonium.version
     ```
 
+
+## Configuring the plugin
+To configure the plugin, configure it before the `version = ` assignment. For example:
+
+=== "Kotlin"
+    ```kotlin title="build.gradle.kts"
+    plugins {
+        id("org.metaborg.gitonium") version "<version>"
+    }
+
+    gitonium {
+        mainBranch.set("master")
+    }
+
+    version = gitonium.version
+    ```
+
+=== "Groovy"
+    ```groovy title="build.gradle"
+    plugins {
+        id "org.metaborg.gitonium" version "<version>"
+    }
+
+    gitonium {
+        mainBranch = "master"
+    }
+
+    version = gitonium.version
+    ```
