@@ -3,10 +3,6 @@ name: 'Build'
 
 on:  # yamllint disable-line rule:truthy
   push:
-    branches:
-      - master
-    tags:
-      - "release-*.*.*"
   pull_request:
     branches:
       - master
