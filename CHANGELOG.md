@@ -5,6 +5,10 @@ All notable changes to this project are documented in this file, based on [Keep 
 ## [Unreleased]
 
 
+## [1.5.2] - 2024-07-15
+- Fix Gitonium extension properties being read too eagerly.
+
+
 ## [1.5.1] - 2024-07-15
 - Small fix to extension conventions.
 - Default value for `SNAPSHOT` suffix should not be preceded with a dash.

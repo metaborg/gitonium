@@ -18,20 +18,29 @@ class GitoniumPlugin : Plugin<Project> {
         extension.setConvention()
         project.extensions.add("gitonium", extension)
 
-        // Set project version
-        project.version = LazyGitoniumVersion(extension, false)
-
         // Register tasks
         registerCheckSnapshotDependenciesTask(project, extension)
         registerPrintVersionTask(project)
         registerAssertNotDirtyTask(project)
         registerWriteBuildPropertiesTask(project, extension)
-        project.subprojects.forEach {
-            it.version = LazyGitoniumVersion(extension, true)
-            registerCheckSnapshotDependenciesTask(it, extension)
-            registerPrintVersionTask(it)
-            registerAssertNotDirtyTask(it)
-            registerWriteBuildPropertiesTask(it, extension)
+        project.subprojects.forEach { subproject ->
+            registerCheckSnapshotDependenciesTask(subproject, extension)
+            registerPrintVersionTask(subproject)
+            registerAssertNotDirtyTask(subproject)
+            registerWriteBuildPropertiesTask(subproject, extension)
+
+            subproject.afterEvaluate {
+                if (extension.setSubprojectVersions) {
+                    subproject.version = LazyGitoniumVersion(extension, true)
+                }
+            }
+        }
+
+        project.afterEvaluate {
+            // Set project version
+            if (extension.setVersion) {
+                project.version = LazyGitoniumVersion(extension, false)
+            }
         }
     }
 
