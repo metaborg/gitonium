@@ -20,7 +20,6 @@ gitonium {
 group = "org.metaborg"
 version = gitonium.version
 description = "A Git-based versioning plugin for Gradle."
-extra["isReleaseVersion"] = !version.toString().endsWith("-SNAPSHOT")
 
 repositories {
     mavenCentral()
