@@ -33,6 +33,8 @@ class GitoniumPluginTests: FunSpec({
                         `java-library`
                         id("org.metaborg.gitonium")
                     }
+
+                    version = gitonium.version
                 """.trimIndent()
             )
             // Ignore untracked directory: .gradle
@@ -67,6 +69,8 @@ class GitoniumPluginTests: FunSpec({
                         `java-library`
                         id("org.metaborg.gitonium")
                     }
+
+                    version = gitonium.version
                 """.trimIndent()
             )
             // Ignore untracked directory: .gradle
@@ -99,6 +103,8 @@ class GitoniumPluginTests: FunSpec({
                         `java-library`
                         id("org.metaborg.gitonium")
                     }
+
+                    version = gitonium.version
                 """.trimIndent()
             )
             repo.commit("Initial commit", allowEmpty = true)
@@ -133,6 +139,8 @@ class GitoniumPluginTests: FunSpec({
                         `java-library`
                         id("org.metaborg.gitonium")
                     }
+
+                    version = gitonium.version
                 """.trimIndent()
             )
             repo.writeFile("", ".gitignore")
@@ -166,6 +174,8 @@ class GitoniumPluginTests: FunSpec({
                         `java-library`
                         id("org.metaborg.gitonium")
                     }
+
+                    version = gitonium.version
                 """.trimIndent()
             )
             repo.writeFile("", ".gitignore")
@@ -201,6 +211,8 @@ class GitoniumPluginTests: FunSpec({
                         `java-library`
                         id("org.metaborg.gitonium")
                     }
+
+                    version = gitonium.version
                 """.trimIndent()
             )
             repo.writeFile("", ".gitignore")
@@ -242,6 +254,8 @@ class GitoniumPluginTests: FunSpec({
                         id("org.metaborg.gitonium")
                     }
 
+                    version = gitonium.version
+
                     dependencies {
                         implementation("org.metaborg:org.spoofax.terms:2.6.0-SNAPSHOT")
                     }
@@ -276,6 +290,8 @@ class GitoniumPluginTests: FunSpec({
                         `maven-publish`
                         id("org.metaborg.gitonium")
                     }
+
+                    version = gitonium.version
 
                     dependencies {
                         implementation("org.metaborg:org.spoofax.terms:2.6.0-SNAPSHOT")
@@ -314,6 +330,8 @@ class GitoniumPluginTests: FunSpec({
                         `java-library`
                         id("org.metaborg.gitonium")
                     }
+
+                    version = gitonium.version
                 """.trimIndent()
             )
             repo.writeFile("", ".gitignore")
@@ -346,6 +364,8 @@ class GitoniumPluginTests: FunSpec({
                         `maven-publish`
                         id("org.metaborg.gitonium")
                     }
+
+                    version = gitonium.version
                 """.trimIndent()
             )
             repo.writeFile("", ".gitignore")
@@ -385,6 +405,8 @@ class GitoniumPluginTests: FunSpec({
                     gitonium {
                         buildPropertiesFile.set(layout.buildDirectory.file("resources/main/version.properties"))
                     }
+
+                    version = gitonium.version
                 """.trimIndent()
             )
             repo.writeFile("class Program { static void main(String[] args) { } }", "src/main/java/Program.java")
