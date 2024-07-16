@@ -8,11 +8,13 @@ Gitonium is a Gradle plugin for automatic versioning based on the current Git br
 
 [![Documentation][documentation-button]][documentation]
 
-| Artifact                                                              | Latest Release                                   | Latest Snapshot                                    |
-|-----------------------------------------------------------------------|--------------------------------------------------|----------------------------------------------------|
-| [`org.metaborg.gitonium`][mvn:gitonium.gradle.plugin] (Gradle plugin) | ![Release][mvn-rel-badge:gitonium.gradle.plugin] | ![Snapshot][mvn-snap-badge:gitonium.gradle.plugin] |
-| [`org.metaborg:gitonium`][mvn:gitonium]                               | ![Release][mvn-rel-badge:gitonium]               | ![Snapshot][mvn-snap-badge:gitonium]               |
+| Gradle Plugin                                                       | Latest Release                                   | Latest Snapshot                                    |
+|---------------------------------------------------------------------|--------------------------------------------------|----------------------------------------------------|
+| [`org.metaborg.gitonium`][mvn:gitonium.gradle.plugin] | ![Release][mvn-rel-badge:gitonium.gradle.plugin] | ![Snapshot][mvn-snap-badge:gitonium.gradle.plugin] |
 
+| Artifact                                             | Latest Release                                   | Latest Snapshot                                    |
+|------------------------------------------------------|--------------------------------------------------|----------------------------------------------------|
+| [`org.metaborg:gitonium`][mvn:gitonium]              | ![Release][mvn-rel-badge:gitonium]               | ![Snapshot][mvn-snap-badge:gitonium]               |
 
 ## Requirements
 Gradle 7 or higher is required. The code snippets in this README assume you are using Gradle with Kotlin, but should be translatable to Groovy as well.
@@ -77,16 +79,17 @@ Unless required by applicable law or agreed to in writing, software distributed 
 [github-build]: https://github.com/metaborg/gitonium/actions
 [license-badge]: https://img.shields.io/github/license/metaborg/gitonium
 [license]: https://github.com/metaborg/gitonium/blob/master/LICENSE
-[github-release-badge]: https://img.shields.io/github/v/release/metaborg/gitonium
+[github-release-badge]: https://img.shields.io/github/v/release/metaborg/gitonium?display_name=release
 [github-release]: https://github.com/metaborg/gitonium/releases
 [documentation-badge]: https://img.shields.io/badge/docs-latest-brightgreen
 [documentation]: https://spoofax.dev/gitonium/
 [documentation-button]: https://img.shields.io/badge/Documentation-blue?style=for-the-badge&logo=googledocs&logoColor=white
 
-[mvn-rel-badge:gitonium.gradle.plugin]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fartifacts.metaborg.org%2Fcontent%2Frepositories%2Freleases%2Forg%2Fmetaborg%2Fgitonium%2Forg.metaborg.gitonium.gradle.plugin%2Fmaven-metadata.xml
-[mvn-snap-badge:gitonium.gradle.plugin]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fartifacts.metaborg.org%2Fcontent%2Frepositories%2Fsnapshots%2Forg%2Fmetaborg%2Fgitonium%2Forg.metaborg.gitonium.gradle.plugin%2Fmaven-metadata.xml
-[mvn:gitonium.gradle.plugin]: https://artifacts.metaborg.org/#nexus-search;gav~org.metaborg.gitonium~org.metaborg.gitonium.gradle.plugin~~~
+[mvn-rel-badge:gitonium.gradle.plugin]: https://img.shields.io/nexus/r/org.metaborg.gitonium/org.metaborg.gitonium.gradle.plugin?server=https%3A%2F%2Fartifacts.metaborg.org&label=%20
+[mvn-rel-badge:gitonium]: https://img.shields.io/nexus/r/org.metaborg/gitonium?server=https%3A%2F%2Fartifacts.metaborg.org&label=%20
 
-[mvn-rel-badge:gitonium]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fartifacts.metaborg.org%2Fcontent%2Frepositories%2Freleases%2Forg%2Fmetaborg%2Fgitonium%2Fmaven-metadata.xml
-[mvn-snap-badge:gitonium]: https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fartifacts.metaborg.org%2Fcontent%2Frepositories%2Fsnapshots%2Forg%2Fmetaborg%2Fgitonium%2Fmaven-metadata.xml
+[mvn-snap-badge:gitonium.gradle.plugin]: https://img.shields.io/nexus/s/org.metaborg.gitonium/org.metaborg.gitonium.gradle.plugin?server=https%3A%2F%2Fartifacts.metaborg.org&label=%20
+[mvn-snap-badge:gitonium]: https://img.shields.io/nexus/s/org.metaborg/gitonium?server=https%3A%2F%2Fartifacts.metaborg.org&label=%20
+
+[mvn:gitonium.gradle.plugin]: https://artifacts.metaborg.org/#nexus-search;gav~org.metaborg.gitonium~org.metaborg.gitonium.gradle.plugin~~~
 [mvn:gitonium]: https://artifacts.metaborg.org/#nexus-search;gav~org.metaborg~gitonium~~~
