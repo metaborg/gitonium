@@ -5,10 +5,9 @@ on:  # yamllint disable-line rule:truthy
   push:
     tags:
       - "release-*.*.*"
-  workflow_dispatch: {} # Allow running this workflow manually (Actions tab)
 
 jobs:
-  build:
+  publish:
     uses: metaborg/actions/.github/workflows/gradle-publish.yaml@main
     secrets:
       METABORG_ARTIFACTS_USERNAME: ${{ secrets.METABORG_ARTIFACTS_USERNAME }}

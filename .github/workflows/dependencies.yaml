@@ -7,5 +7,5 @@ on:  # yamllint disable-line rule:truthy
       - master
 
 jobs:
-  build:
+  dependencies:
     uses: metaborg/actions/.github/workflows/gradle-dependencies.yaml@main
