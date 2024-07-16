@@ -5,6 +5,18 @@ All notable changes to this project are documented in this file, based on [Keep 
 ## [Unreleased]
 
 
+## [1.7.0] - 2024-07-16
+- *Breaking*: The version must be explicitly set (if configuring Gitonium, set the version after configuring Gitonium):
+    ```kotlin
+    gitonium {
+        mainBranch.set("main")
+    }
+    version = gitonium.version
+    ```
+- *Breaking*: Gitonium no longer applies the same policy to any subprojects automatically.
+  If you have a multi-project build, you must apply Gitonium to each subproject individually and set the version for each project individually.
+
+
 ## [1.6.2] - 2024-07-16
 - When creating a forced snapshot version, the snapshot version should be the same regardless of whether the current `HEAD` commit has a relwase tag or not.
 - By default, set `firstParentOnly` to `true`.
@@ -91,7 +103,9 @@ All notable changes to this project are documented in this file, based on [Keep 
 - `Project.DEFAULT_VERSION` (`"unspecified"`) is assigned as version if no Git repository is found, instead of failing.
 
 
-[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.6.1...HEAD
+[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.7.0...HEAD
+[1.7.0]: https://github.com/metaborg/gitonium/compare/release-1.6.2...release-1.7.0
+[1.6.2]: https://github.com/metaborg/gitonium/compare/release-1.6.1...release-1.6.2
 [1.6.1]: https://github.com/metaborg/gitonium/compare/release-1.6.0...release-1.6.1
 [1.6.0]: https://github.com/metaborg/gitonium/compare/release-1.5.4...release-1.6.0
 [1.5.4]: https://github.com/metaborg/gitonium/compare/release-1.5.3...release-1.5.4
