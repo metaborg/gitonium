@@ -19,13 +19,6 @@ class GitoniumPlugin : Plugin<Project> {
         val extension = GitoniumExtension(project, project.objects)
         project.extensions.add("gitonium", extension)
 
-        // Configure the version
-        // The value will be computed and cached when LazyGitoniumVersion.toString() is called for the first time.
-        project.version = LazyGitoniumVersion(extension, false)
-        project.subprojects.forEach { subproject ->
-            subproject.version = LazyGitoniumVersion(extension, true)
-        }
-
         // Register tasks
         registerCheckSnapshotDependenciesTask(project, extension)
         registerPrintVersionTask(project)
