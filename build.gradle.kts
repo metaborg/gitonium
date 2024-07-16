@@ -10,6 +10,10 @@ plugins {
     `maven-publish`
 }
 
+gitonium {
+    mainBranch.set("master")
+}
+
 group = "org.metaborg"
 description = "A Git-based versioning plugin for Gradle."
 
@@ -33,10 +37,6 @@ gradlePlugin {
             implementationClass = "mb.gitonium.GitoniumPlugin"
         }
     }
-}
-
-gitonium {
-    mainBranch.set("master")
 }
 
 mavenPublishConvention {
