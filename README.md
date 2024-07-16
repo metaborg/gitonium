@@ -35,13 +35,15 @@ Apply the gitonium plugin to a project (a `build.gradle(.kts)` file) as follows:
 plugins {
     id("org.metaborg.gitonium") version "<version>"
 }
+
+version = gitonium.version
 ```
 
 The latest version of the plugin can be found at the top of this README. Gitonium will then lazily set the version of the project, and all sub-projects, to a version based on the Git repository. To override the version of a project, simply set the version manually, and this will override the lazily set version.
 
 
 ## Usage
-Gitonium sets the version of the project based on the latest version tag (of the form `release-{version}`) found on the current branch. For example, if the HEAD of the current branch is tagged `release-0.1.3`, then the version is assigned `0.1.3`. Alternatively, if an earlier commit on the `main` branch is tagged `release-0.1.3`, then the version `0.1.4-main-SNAPSHOT` is assigned, one patch version higher than the last release.
+Gitonium sets the version of the project based on the latest version tag (of the form `release-{version}`) found on the current branch. For example, if the HEAD of the current branch is tagged `release-0.1.3`, then the version is assigned `0.1.3`. Alternatively, if an earlier commit on the `develop` branch is tagged `release-0.1.3`, then the version `0.1.4-develop-SNAPSHOT` is assigned, one patch version higher than the last release.
 
 If no release tag was found, the version is not set and therefore defaults to Gradle's default version of `unspecified`.
 
