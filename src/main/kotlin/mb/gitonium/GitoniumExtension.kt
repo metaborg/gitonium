@@ -49,7 +49,7 @@ open class GitoniumExtension @Inject constructor(
         .convention(true)
     /** Whether to consider the first parent only when looking for tags across merge commits. */
     val firstParentOnly: Property<Boolean> = objects.property(Boolean::class.java)
-        .convention(false)
+        .convention(true)
     /** Whether to check for SNAPSHOT dependencies when publishing a release. */
     val checkSnapshotDependenciesInRelease: Property<Boolean> = objects.property(Boolean::class.java)
         .convention(true)

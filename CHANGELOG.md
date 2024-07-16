@@ -5,6 +5,11 @@ All notable changes to this project are documented in this file, based on [Keep 
 ## [Unreleased]
 
 
+## [1.6.2] - 2024-07-16
+- When creating a forced snapshot version, the snapshot version should be the same regardless of whether the current `HEAD` commit has a relwase tag or not.
+- By default, set `firstParentOnly` to `true`.
+
+
 ## [1.6.1] - 2024-07-16
 - No changes.
 

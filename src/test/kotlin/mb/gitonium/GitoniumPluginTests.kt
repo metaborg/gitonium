@@ -101,11 +101,13 @@ class GitoniumPluginTests: FunSpec({
                     }
                 """.trimIndent()
             )
+            repo.commit("Initial commit", allowEmpty = true)
+            repo.tag("release-1.2.2")
             // Ignore untracked directory: .gradle
             repo.writeFile(".gradle", ".gitignore")
             repo.addAll()
-            repo.commit("Initial commit")
-            repo.tag("release-1.2.3")
+            repo.commit("Gitignore commit")
+            repo.tag("release-1.2.4")
 
 
             // Act
@@ -118,7 +120,7 @@ class GitoniumPluginTests: FunSpec({
             // Assert
             val versionStr = result.output.normaliseLineSeparators()
                 .substringAfter("> Task :printVersion\n").substringBefore('\n')
-            versionStr shouldBe "1.2.4-SNAPSHOT"
+            versionStr shouldBe "1.2.3-SNAPSHOT"
         }
 
         test("should print dirty version when git repo has changed files") {

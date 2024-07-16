@@ -52,6 +52,7 @@ class NativeGitRepo(
         vararg patterns: String,
         withHash: Boolean,
         firstParentOnly: Boolean,
+        commit: String,
     ): String {
         if (withHash) {
             return runGitCommand(
@@ -66,7 +67,7 @@ class NativeGitRepo(
                 *(if (firstParentOnly) listOf("--first-parent") else emptyList()).toTypedArray(),
                 // Match the pattern
                 *patterns.map { "--match=$it" }.toTypedArray(),
-                "HEAD",
+                commit,
             )
         } else {
             try {
@@ -80,7 +81,7 @@ class NativeGitRepo(
                     *(if (firstParentOnly) listOf("--first-parent") else emptyList()).toTypedArray(),
                     // Match the pattern
                     *patterns.map { "--match=$it" }.toTypedArray(),
-                    "HEAD",
+                    commit,
                 )
             } catch (ex: CommandException) {
                 if (ex.exitCode == 128 && "No names found, cannot describe anything" in ex.stderr) {

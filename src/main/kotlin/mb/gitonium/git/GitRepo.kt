@@ -63,6 +63,7 @@ interface GitRepo {
      * @param patterns The glob patterns to match tags against; or none to match all tags.
      * @param withHash Whether to include the short commit hash in the name if the tag does not point to the current commit.
      * @param firstParentOnly Whether to only consider the first parent when looking for tags across merge commits.
+     * @param commit The commit for which to find the tag description.
      * @return The human-readable name of the last tag on this branch, optionally with a short commit hash suffix
      * if the tag does not point to the current commit. If there is no tag, this just returns the short commit hash.
      * @throws CommandException If the command fails or returns a non-zero exit code.
@@ -73,6 +74,7 @@ interface GitRepo {
         vararg patterns: String,
         withHash: Boolean = false,
         firstParentOnly: Boolean = false,
+        commit: String = "HEAD",
     ): String
 
     /**
