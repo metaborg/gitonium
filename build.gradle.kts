@@ -10,10 +10,12 @@ plugins {
     `maven-publish`
 }
 
+// Configure Gitonium, then set the version.
 gitonium {
     mainBranch.set("master")
 }
 
+version = gitonium.version
 group = "org.metaborg"
 description = "A Git-based versioning plugin for Gradle."
 
