@@ -24,12 +24,6 @@ class GitoniumPlugin : Plugin<Project> {
         registerPrintVersionTask(project)
         registerAssertNotDirtyTask(project)
         registerWriteBuildPropertiesTask(project, extension)
-        project.subprojects.forEach { subproject ->
-            registerCheckSnapshotDependenciesTask(subproject, extension)
-            registerPrintVersionTask(subproject)
-            registerAssertNotDirtyTask(subproject)
-            registerWriteBuildPropertiesTask(subproject, extension)
-        }
     }
 
     /**
