@@ -10,5 +10,3 @@ on:  # yamllint disable-line rule:truthy
 jobs:
   documentation:
     uses: metaborg/actions/.github/workflows/mkdocs-material.yaml@main
-    with:
-      docs-dir: 'docs'

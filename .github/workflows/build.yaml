@@ -10,10 +10,15 @@ on:  # yamllint disable-line rule:truthy
 jobs:
   build:
     uses: metaborg/actions/.github/workflows/gradle-build-matrix.yaml@main
-  publish:
-    uses: metaborg/actions/.github/workflows/gradle-publish.yaml@main
-    if: "github.event_name == 'push'"
-    needs: [build]
-    secrets:
-      METABORG_ARTIFACTS_USERNAME: ${{ secrets.METABORG_ARTIFACTS_USERNAME }}
-      METABORG_ARTIFACTS_PASSWORD: ${{ secrets.METABORG_ARTIFACTS_PASSWORD }}
+#  publish:
+#    uses: metaborg/actions/.github/workflows/gradle-publish.yaml@main
+#    with:
+#      gradle-command: |
+#          gradle assemble publish -Pgitonium.isSnapshot=true
+#      gradle-version-command: |
+#          gradle -q :printVersion -Pgitonium.isSnapshot=true
+#    if: "github.event_name == 'push'"
+#    needs: [build]
+#    secrets:
+#      METABORG_ARTIFACTS_USERNAME: ${{ secrets.METABORG_ARTIFACTS_USERNAME }}
+#      METABORG_ARTIFACTS_PASSWORD: ${{ secrets.METABORG_ARTIFACTS_PASSWORD }}
