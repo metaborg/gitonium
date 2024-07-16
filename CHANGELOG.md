@@ -5,6 +5,10 @@ All notable changes to this project are documented in this file, based on [Keep 
 ## [Unreleased]
 
 
+## [1.6.0] - 2024-07-16
+- Add `gitonium.isSnapshot` Gradle property that, when set, forces the creation of a snapshot version even if the release tag is set to the current commit.
+
+
 ## [1.5.3] - 2024-07-15
 - The Gitonium extension now consists of only lazy properties.
 

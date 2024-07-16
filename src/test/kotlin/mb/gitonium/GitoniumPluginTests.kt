@@ -89,6 +89,38 @@ class GitoniumPluginTests: FunSpec({
             versionStr shouldBe "1.2.3"
         }
 
+        test("should print snapshot version when git repo is clean but gitonium.isSnapshot is set") {
+            // Arrange
+            val repo = createEmptyRepository(::gitRepoBuilder)
+            val buildFile = repo.directory.resolve("build.gradle.kts")
+            buildFile.writeText(
+                """
+                    plugins {
+                        `java-library`
+                        id("org.metaborg.gitonium")
+                    }
+                """.trimIndent()
+            )
+            // Ignore untracked directory: .gradle
+            repo.writeFile(".gradle", ".gitignore")
+            repo.addAll()
+            repo.commit("Initial commit")
+            repo.tag("release-1.2.3")
+
+
+            // Act
+            val result = GradleRunner.create()
+                .withProjectDir(repo.directory)
+                .withArguments(":printVersion", "-Pgitonium.isSnapshot=true")
+                .withPluginClasspath()
+                .build()
+
+            // Assert
+            val versionStr = result.output.normaliseLineSeparators()
+                .substringAfter("> Task :printVersion\n").substringBefore('\n')
+            versionStr shouldBe "1.2.4-SNAPSHOT"
+        }
+
         test("should print dirty version when git repo has changed files") {
             // Arrange
             val repo = createEmptyRepository(::gitRepoBuilder)
@@ -120,6 +152,78 @@ class GitoniumPluginTests: FunSpec({
             val versionStr = result.output.normaliseLineSeparators()
                 .substringAfter("> Task :printVersion\n").substringBefore('\n')
             versionStr shouldBe "1.2.3+dirty"
+        }
+
+        test("should print snapshot version when git repo has had a commit since the tag") {
+            // Arrange
+            val repo = createEmptyRepository(::gitRepoBuilder)
+            val buildFile = repo.directory.resolve("build.gradle.kts")
+            buildFile.writeText(
+                """
+                    plugins {
+                        `java-library`
+                        id("org.metaborg.gitonium")
+                    }
+                """.trimIndent()
+            )
+            repo.writeFile("", ".gitignore")
+            repo.addAll()
+            repo.commit("Initial commit")
+            repo.tag("release-1.2.3")
+            // Changed file: .gitignore
+            repo.writeFile(".gradle", ".gitignore")
+            repo.addAll()
+            repo.commit("New commit")
+
+
+            // Act
+            val result = GradleRunner.create()
+                .withProjectDir(repo.directory)
+                .withArguments(":printVersion")
+                .withPluginClasspath()
+                .build()
+
+            // Assert
+            val versionStr = result.output.normaliseLineSeparators()
+                .substringAfter("> Task :printVersion\n").substringBefore('\n')
+            versionStr shouldBe "1.2.4-SNAPSHOT"
+        }
+
+        test("should print snapshot and dirty version when git repo has had changes and a commit since the tag") {
+            // Arrange
+            val repo = createEmptyRepository(::gitRepoBuilder)
+            val buildFile = repo.directory.resolve("build.gradle.kts")
+            buildFile.writeText(
+                """
+                    plugins {
+                        `java-library`
+                        id("org.metaborg.gitonium")
+                    }
+                """.trimIndent()
+            )
+            repo.writeFile("", ".gitignore")
+            repo.addAll()
+            repo.commit("Initial commit")
+            repo.tag("release-1.2.3")
+            // Changed file: .gitignore
+            repo.writeFile(".gradle", ".gitignore")
+            repo.addAll()
+            repo.commit("New commit")
+            // Changed file: .gitignore
+            repo.writeFile(".gradle\n.idea", ".gitignore")
+
+
+            // Act
+            val result = GradleRunner.create()
+                .withProjectDir(repo.directory)
+                .withArguments(":printVersion")
+                .withPluginClasspath()
+                .build()
+
+            // Assert
+            val versionStr = result.output.normaliseLineSeparators()
+                .substringAfter("> Task :printVersion\n").substringBefore('\n')
+            versionStr shouldBe "1.2.4-SNAPSHOT+dirty"
         }
     }
 

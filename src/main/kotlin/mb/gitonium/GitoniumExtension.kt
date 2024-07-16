@@ -81,7 +81,7 @@ open class GitoniumExtension @Inject constructor(
             snapshotSuffix.get(),
             snapshotIncludeBranch.get(),
             firstParentOnly.get(),
-            alwaysSnapshotVersion.get(),
+            alwaysSnapshotVersion.get() || (project.providers.gradleProperty("gitonium.isSnapshot").getOrNull()?.toBoolean() ?: false),
             mainBranch.getOrNull(),
         )
     }
