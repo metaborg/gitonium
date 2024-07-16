@@ -5,6 +5,10 @@ All notable changes to this project are documented in this file, based on [Keep 
 ## [Unreleased]
 
 
+## [1.6.1] - 2024-07-16
+- No changes.
+
+
 ## [1.6.0] - 2024-07-16
 - Add `gitonium.isSnapshot` Gradle property that, when set, forces the creation of a snapshot version even if the release tag is set to the current commit.
 
@@ -82,7 +86,8 @@ All notable changes to this project are documented in this file, based on [Keep 
 - `Project.DEFAULT_VERSION` (`"unspecified"`) is assigned as version if no Git repository is found, instead of failing.
 
 
-[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.6.0...HEAD
+[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.6.1...HEAD
+[1.6.1]: https://github.com/metaborg/gitonium/compare/release-1.6.0...release-1.6.1
 [1.6.0]: https://github.com/metaborg/gitonium/compare/release-1.5.4...release-1.6.0
 [1.5.4]: https://github.com/metaborg/gitonium/compare/release-1.5.3...release-1.5.4
 [1.5.3]: https://github.com/metaborg/gitonium/compare/release-1.5.2...release-1.5.3
