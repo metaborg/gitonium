@@ -19,10 +19,6 @@ version = gitonium.version
 group = "org.metaborg"
 description = "A Git-based versioning plugin for Gradle."
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     testImplementation  (libs.kotest)
     testImplementation  (libs.kotest.assertions)
