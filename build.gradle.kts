@@ -7,7 +7,6 @@ plugins {
     id("org.metaborg.convention.maven-publish")
     `kotlin-dsl`
     `java-gradle-plugin`
-    `maven-publish`
 }
 
 // Configure Gitonium, then set the version.
