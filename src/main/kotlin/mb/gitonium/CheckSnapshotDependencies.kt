@@ -37,7 +37,7 @@ open class CheckSnapshotDependencies @Inject constructor(
             append("Project '")
             append(project.path)
             append("' will be published as a release under version '")
-            append(extension.version)
+            append(project.version)
             append("', but has the following SNAPSHOT dependencies: ")
             snapshotDependencies.forEach {
                 append("\n- ")

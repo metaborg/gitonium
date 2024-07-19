@@ -70,19 +70,21 @@ open class GitoniumExtension @Inject constructor(
         .convention(true)
 
     /** The version info, determined lazily. */
-    val versionInfo: GitoniumVersion get() = GitoniumVersion.determineVersion(
-        project.rootDir,
-        tagPrefix.get(),
-        dirtySuffix.get(),
-        snapshotMajorIncrease.get(),
-        snapshotMinorIncrease.get(),
-        snapshotPatchIncrease.get(),
-        snapshotSuffix.get(),
-        snapshotIncludeBranch.get(),
-        firstParentOnly.get(),
-        alwaysSnapshotVersion.get() || (project.providers.gradleProperty("gitonium.isSnapshot").getOrNull()?.toBoolean() ?: false),
-        mainBranch.getOrNull(),
-    )
+    val versionInfo: GitoniumVersion by lazy {
+        GitoniumVersion.determineVersion(
+            project.rootDir,
+            tagPrefix.get(),
+            dirtySuffix.get(),
+            snapshotMajorIncrease.get(),
+            snapshotMinorIncrease.get(),
+            snapshotPatchIncrease.get(),
+            snapshotSuffix.get(),
+            snapshotIncludeBranch.get(),
+            firstParentOnly.get(),
+            alwaysSnapshotVersion.get() || (project.providers.gradleProperty("gitonium.isSnapshot").getOrNull()?.toBoolean() ?: false),
+            mainBranch.getOrNull(),
+        )
+    }
 
     /**
      * The computed version string.
@@ -93,9 +95,11 @@ open class GitoniumExtension @Inject constructor(
      * and `-SNAPSHOT` as the suffix (e.g., `"1.0.1-develop-SNAPSHOT"`).
      * If the repository is dirty, the version is suffixed with `+dirty` (e.g., `"1.0.1-SNAPSHOT+dirty"`).
      */
-    val version: String get() = versionInfo.versionString ?: run {
-        LOG.warn("Gitonium could not determine version from Git repository, using default version.")
-        Project.DEFAULT_VERSION
+    val version: String by lazy {
+        versionInfo.versionString ?: run {
+            LOG.warn("Gitonium could not determine version from Git repository, using default version.")
+            Project.DEFAULT_VERSION
+        }
     }
 
     /** Whether the current commit has a release version tag. */
