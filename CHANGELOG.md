@@ -5,6 +5,10 @@ All notable changes to this project are documented in this file, based on [Keep 
 ## [Unreleased]
 
 
+## [1.7.3] - 2024-07-22
+- No changes.
+
+
 ## [1.7.2] - 2024-07-19
 - Version computation is now lazy. Only assign the version to the project after configuring Gitonium.
 
@@ -111,7 +115,8 @@ All notable changes to this project are documented in this file, based on [Keep 
 - `Project.DEFAULT_VERSION` (`"unspecified"`) is assigned as version if no Git repository is found, instead of failing.
 
 
-[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.7.2...HEAD
+[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.7.3...HEAD
+[1.7.3]: https://github.com/metaborg/gitonium/compare/release-1.7.2...release-1.7.3
 [1.7.2]: https://github.com/metaborg/gitonium/compare/release-1.7.1...release-1.7.2
 [1.7.1]: https://github.com/metaborg/gitonium/compare/release-1.7.0...release-1.7.1
 [1.7.0]: https://github.com/metaborg/gitonium/compare/release-1.6.2...release-1.7.0
