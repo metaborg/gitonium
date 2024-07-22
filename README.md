@@ -8,9 +8,9 @@ Gitonium is a Gradle plugin for automatic versioning based on the current Git br
 
 [![Documentation][documentation-button]][documentation]
 
-| Gradle Plugin                                                       | Latest Release                                   | Latest Snapshot                                    |
-|---------------------------------------------------------------------|--------------------------------------------------|----------------------------------------------------|
-| [`org.metaborg.gitonium`][mvn:gitonium.gradle.plugin] | ![Release][mvn-rel-badge:gitonium.gradle.plugin] | ![Snapshot][mvn-snap-badge:gitonium.gradle.plugin] |
+| Gradle Plugin                                                      | Latest Release                                    | Latest Snapshot                                     |
+|--------------------------------------------------------------------|---------------------------------------------------|-----------------------------------------------------|
+| `org.metaborg.gitonium` | [![Release][mvn-rel-badge:gitonium.gradle.plugin]][mvn:gitonium.gradle.plugin] | [![Snapshot][mvn-snap-badge:gitonium.gradle.plugin]][mvn:gitonium.gradle.plugin] |
 
 ## Requirements
 Gradle 7 or higher is required. The code snippets in this README assume you are using Gradle with Kotlin, but should be translatable to Groovy as well.
