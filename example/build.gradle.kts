@@ -1,6 +1,6 @@
 plugins {
     `java-library`
-    id("org.metaborg.gitonium")
+    id("org.metaborg.gitonium") // Apply the plugin we're testing
 }
 
 

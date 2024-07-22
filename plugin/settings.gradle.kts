@@ -1,3 +1,5 @@
+rootProject.name = "spoofax.gradle.root"
+
 dependencyResolutionManagement {
     repositories {
         maven("https://artifacts.metaborg.org/content/groups/public/")
@@ -16,7 +18,4 @@ plugins {
     id("org.metaborg.convention.settings") version "latest.integration"
 }
 
-rootProject.name = "gitonium-project"
-
-includeBuild("plugin/")
-includeBuild("example/")
+rootProject.name = "gitonium"

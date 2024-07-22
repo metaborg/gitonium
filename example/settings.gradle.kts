@@ -1,4 +1,4 @@
-rootProject.name = "example-project"
+rootProject.name = "gitonium-example-project"
 
-includeBuild("../")
+includeBuild("../plugin/")
 
