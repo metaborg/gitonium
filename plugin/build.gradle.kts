@@ -33,7 +33,7 @@ gradlePlugin {
 allprojects {
     apply(plugin = "org.metaborg.gitonium")
 
-    // Configure Gitonium, then set the version.
+    // Configure Gitonium before setting the version
     gitonium {
         mainBranch.set("master")
     }
