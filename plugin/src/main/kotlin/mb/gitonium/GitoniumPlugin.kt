@@ -22,6 +22,7 @@ class GitoniumPlugin : Plugin<Project> {
         // Register tasks
         registerCheckSnapshotDependenciesTask(project, extension)
         registerPrintVersionTask(project)
+        registerPrintProjectsTask(project)
         registerAssertNotDirtyTask(project)
         registerWriteBuildPropertiesTask(project, extension)
     }
@@ -62,6 +63,24 @@ class GitoniumPlugin : Plugin<Project> {
 
             doLast {
                 println(project.version)
+            }
+        }
+    }
+
+    /**
+     * Registers a task that prints the GAV coordinates of all projects in the build to STDOUT.
+     *
+     * @param project The project for which to register the task.
+     */
+    private fun registerPrintProjectsTask(project: Project) {
+        project.tasks.register("printProjects") {
+            this.group = "help"
+            this.description = "Prints the GAV coordinates of all projects in the build."
+
+            doLast {
+                project.allprojects.forEach {
+                    println("${it.group}:${it.name}:${it.version}")
+                }
             }
         }
     }

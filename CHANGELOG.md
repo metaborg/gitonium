@@ -5,6 +5,10 @@ All notable changes to this project are documented in this file, based on [Keep 
 ## [Unreleased]
 
 
+## [1.7.4] - 2024-07-24
+- Add `printProjects` task that prints the GAV coordinates of all projects.
+
+
 ## [1.7.3] - 2024-07-22
 - No changes.
 
@@ -30,7 +34,7 @@ All notable changes to this project are documented in this file, based on [Keep 
 
 
 ## [1.6.2] - 2024-07-16
-- When creating a forced snapshot version, the snapshot version should be the same regardless of whether the current `HEAD` commit has a relwase tag or not.
+- When creating a forced snapshot version, the snapshot version should be the same regardless of whether the current `HEAD` commit has a release tag or not.
 - By default, set `firstParentOnly` to `true`.
 
 
