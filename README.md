@@ -66,7 +66,7 @@ If the repository has no HEAD, Gitonium will fail.
 
 
 ## License
-Copyright 2018-2024 Delft University of Technology
+Copyright 2018-2024 [Programming Languages Group](https://pl.ewi.tudelft.nl/), [Delft University of Technology](https://www.tudelft.nl/)
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at <https://www.apache.org/licenses/LICENSE-2.0>
 

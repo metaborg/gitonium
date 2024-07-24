@@ -49,8 +49,8 @@ allprojects {
             metadata {
                 inceptionYear.set("2019")
                 developers.set(listOf(
-                    Developer("gohla", "Gabriel Konat", "g.d.p.konat@tudelft.nl"),
-                    Developer("virtlink", "Daniel A. A. Pelsmaeker", "d.a.a.pelsmaeker@tudelft.nl"),
+                    Developer("Virtlink", "Daniel A. A. Pelsmaeker", "developer@pelsmaeker.net"),
+                    Developer("Gohla", "Gabriel Konat", "gabrielkonat@gmail.com"),
                 ))
             }
         }
