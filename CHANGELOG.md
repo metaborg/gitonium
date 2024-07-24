@@ -5,6 +5,10 @@ All notable changes to this project are documented in this file, based on [Keep 
 ## [Unreleased]
 
 
+## [1.7.5] - 2024-07-24
+- Warn and continue if the version could not be determined, or if the directory is not a Git repository.
+
+
 ## [1.7.4] - 2024-07-24
 - Add `printProjects` task that prints the GAV coordinates of all projects.
 
@@ -119,7 +123,9 @@ All notable changes to this project are documented in this file, based on [Keep 
 - `Project.DEFAULT_VERSION` (`"unspecified"`) is assigned as version if no Git repository is found, instead of failing.
 
 
-[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.7.3...HEAD
+[Unreleased]: https://github.com/metaborg/gitonium/compare/release-1.7.5...HEAD
+[1.7.5]: https://github.com/metaborg/gitonium/compare/release-1.7.4...release-1.7.5
+[1.7.4]: https://github.com/metaborg/gitonium/compare/release-1.7.3...release-1.7.4
 [1.7.3]: https://github.com/metaborg/gitonium/compare/release-1.7.2...release-1.7.3
 [1.7.2]: https://github.com/metaborg/gitonium/compare/release-1.7.1...release-1.7.2
 [1.7.1]: https://github.com/metaborg/gitonium/compare/release-1.7.0...release-1.7.1

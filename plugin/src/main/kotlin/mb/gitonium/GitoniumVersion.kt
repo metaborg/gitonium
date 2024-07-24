@@ -1,11 +1,15 @@
 package mb.gitonium
 
-import mb.gitonium.GitoniumVersion.Companion.getCurrentVersion
 import mb.gitonium.git.CommandException
 import mb.gitonium.git.GitRepo
 import mb.gitonium.git.NativeGitRepo
+import org.gradle.api.Project
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.IOException
+
+private val LOG: Logger = LoggerFactory.getLogger(GitoniumVersion::class.java)
 
 /**
  * A Gitonium version, determined from a Git repository.
@@ -15,8 +19,8 @@ data class GitoniumVersion(
     val branch: String?,
     /** The current commit ID; of `null` if it could not be determined. */
     val commit: String?,
-    /** The current version string; or `null` if it could not be determined. */
-    val versionString: String?,
+    /** The current version string; or `"unspecified"` if it could not be determined. */
+    val versionString: String,
     /** The current version; or `null` if it could not be determined. */
     val version: SemanticVersion?,
     /** The most recent release version string; or `null` if it could not be determined. */
@@ -56,48 +60,66 @@ data class GitoniumVersion(
             /** The name of the main branch. */
             mainBranch: String? = "main",
         ): GitoniumVersion {
+            try {
+                val repo = getGitRepo(repoDirectory) ?: throw IOException("No Git repository found at $repoDirectory.")
 
-            val repo = getGitRepo(repoDirectory) ?: throw IOException("No Git repository found at $repoDirectory.")
+                val (tagVersion, tagIsSnapshot) = repo.computeCurrentVersion(tagPrefix, firstParentOnly, alwaysSnapshot)
+                val isSnapshot = tagIsSnapshot || alwaysSnapshot
+                val actualTagVersion = if (tagVersion != null && isSnapshot) tagVersion.copy(
+                    major = tagVersion.major + snapshotMajorIncrease,
+                    minor = tagVersion.minor + snapshotMinorIncrease,
+                    patch = tagVersion.patch + snapshotPatchIncrease,
+                ) else tagVersion
 
-            val (tagVersion, tagIsSnapshot) = repo.computeCurrentVersion(tagPrefix, firstParentOnly, alwaysSnapshot)
-            val isSnapshot = tagIsSnapshot || alwaysSnapshot
-            val actualTagVersion = if (tagVersion != null && isSnapshot) tagVersion.copy(
-                major = tagVersion.major + snapshotMajorIncrease,
-                minor = tagVersion.minor + snapshotMinorIncrease,
-                patch = tagVersion.patch + snapshotPatchIncrease,
-            ) else tagVersion
+                // Determine the current branch name
+                val branch = if (isSnapshot && snapshotIncludeBranch) repo.getCurrentBranchOrNull() else null
+                val commit = repo.getCurrentCommitHashOrNull()
+                val snapshotVersionSuffix = if (isSnapshot) buildString {
+                    if (branch != mainBranch) append(branch ?: "")
+                    if (snapshotSuffix.isNotBlank()) {
+                        if (isNotEmpty()) append("-")
+                        append(snapshotSuffix)
+                    }
+                }.ifBlank { null } else null
+                val dirtyVersionSuffix = if (repo.isDirty()) dirtySuffix.ifBlank { null } else null
 
-            // Determine the current branch name
-            val branch = if (isSnapshot && snapshotIncludeBranch) repo.getCurrentBranchOrNull() else null
-            val commit = repo.getCurrentCommitHashOrNull()
-            val snapshotVersionSuffix = if (isSnapshot) buildString {
-                if (branch != mainBranch) append(branch ?: "")
-                if (snapshotSuffix.isNotBlank()) {
-                    if (isNotEmpty()) append("-")
-                    append(snapshotSuffix)
+                val version = actualTagVersion?.let {
+                    SemanticVersion(
+                        major = it.major,
+                        minor = it.minor,
+                        patch = it.patch,
+                        preRelease = it.preRelease + listOfNotNull(snapshotVersionSuffix),
+                        build = it.build + listOfNotNull(dirtyVersionSuffix),
+                    )
                 }
-            }.ifBlank { null } else null
-            val dirtyVersionSuffix = if (repo.isDirty()) dirtySuffix.ifBlank { null } else null
 
-            val version = actualTagVersion?.let {
-                SemanticVersion(
-                    major = it.major,
-                    minor = it.minor,
-                    patch = it.patch,
-                    preRelease = it.preRelease + listOfNotNull(snapshotVersionSuffix),
-                    build = it.build + listOfNotNull(dirtyVersionSuffix),
+                if (version == null) {
+                    LOG.warn("Gitonium could not determine version from Git repository, using version `${Project.DEFAULT_VERSION}`.")
+                }
+
+                return GitoniumVersion(
+                    branch = branch,
+                    commit = commit,
+                    versionString = version?.toString() ?: Project.DEFAULT_VERSION,
+                    version = version,
+                    releaseVersionString = tagVersion?.toString(),
+                    releaseVersion = tagVersion,
+                    isDirty = repo.isDirty(),
+                    isRelease = !isSnapshot
+                )
+            } catch (ex: IOException) {
+                LOG.warn("Gitonium could not determine version from Git repository, using version `${Project.DEFAULT_VERSION}`: ${ex.message}")
+                return GitoniumVersion(
+                    branch = null,
+                    commit = null,
+                    versionString = Project.DEFAULT_VERSION,
+                    version = null,
+                    releaseVersionString = null,
+                    releaseVersion = null,
+                    isDirty = false,
+                    isRelease = false
                 )
             }
-            return GitoniumVersion(
-                branch = branch,
-                commit = commit,
-                versionString = version?.toString(),
-                version = version,
-                releaseVersionString = tagVersion?.toString(),
-                releaseVersion = tagVersion,
-                isDirty = repo.isDirty(),
-                isRelease = !isSnapshot
-            )
         }
 
         /**

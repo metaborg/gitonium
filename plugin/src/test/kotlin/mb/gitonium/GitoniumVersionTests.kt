@@ -10,6 +10,7 @@ import mb.gitonium.git.GitTestUtils.commitFile
 import mb.gitonium.git.GitTestUtils.copyTestGitConfig
 import mb.gitonium.git.GitTestUtils.createEmptyRepository
 import mb.gitonium.git.NativeGitRepo
+import org.gradle.api.Project
 import java.io.File
 import java.io.IOException
 
@@ -26,19 +27,27 @@ class GitoniumVersionTests: FunSpec({
     }
 
     context("determineVersion()") {
-        test("should throw, when the directory is not a Git repository") {
+        test("should return `unspecified`, when the directory is not a Git repository") {
             // Arrange
             val repoDir = tempdir()
 
-            // Act/Assert
-            shouldThrow<IOException> {
-                GitoniumVersion.determineVersion(
-                    repoDirectory = repoDir,
-                )
+            // Act
+            val versionInfo = GitoniumVersion.determineVersion(
+                repoDirectory = repoDir,
+            )
+
+            // Assert
+            assertSoftly {
+                versionInfo.version shouldBe null
+                versionInfo.versionString shouldBe Project.DEFAULT_VERSION
+                versionInfo.branch shouldBe null
+                versionInfo.isDirty shouldBe false
+                versionInfo.isRelease shouldBe false
+                versionInfo.isSnapshot shouldBe true
             }
         }
 
-        test("should return no version, when the directory is an empty Git repository") {
+        test("should return `unspecified`, when the directory is an empty Git repository") {
             // Arrange
             val repo = createEmptyRepository(::buildGitRepo)
 
@@ -50,7 +59,7 @@ class GitoniumVersionTests: FunSpec({
             // Assert
             assertSoftly {
                 versionInfo.version shouldBe null
-                versionInfo.versionString shouldBe null
+                versionInfo.versionString shouldBe Project.DEFAULT_VERSION
                 versionInfo.branch shouldBe "main"
                 versionInfo.isDirty shouldBe false
                 versionInfo.isRelease shouldBe false

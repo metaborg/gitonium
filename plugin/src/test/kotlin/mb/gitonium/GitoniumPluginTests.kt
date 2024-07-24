@@ -1,12 +1,14 @@
 package mb.gitonium
 
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.engine.spec.tempdir
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import mb.gitonium.git.GitTestUtils.copyTestGitConfig
 import mb.gitonium.git.GitTestUtils.createEmptyRepository
 import mb.gitonium.git.GitTestUtils.writeFile
 import mb.gitonium.git.NativeGitRepo
+import org.gradle.api.Project
 import org.gradle.kotlin.dsl.support.normaliseLineSeparators
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
@@ -59,6 +61,32 @@ class GitoniumPluginTests: FunSpec({
     }
 
     context("task :printVersion") {
+        test("should print `unspecified` when directory is not a Git repo") {
+            // Arrange
+            val repoDir = tempdir()
+            val buildFile = repoDir.resolve("build.gradle.kts")
+            buildFile.writeText(
+                """
+                    plugins {
+                        `java-library`
+                        id("org.metaborg.gitonium")
+                    }
+
+                    version = gitonium.version
+                """.trimIndent()
+            )
+
+            // Act
+            val result = GradleRunner.create()
+                .withProjectDir(repoDir)
+                .withArguments(":printVersion", "--quiet")
+                .withPluginClasspath()
+                .build()
+
+            // Assert
+            result.output.trim() shouldBe Project.DEFAULT_VERSION
+        }
+
         test("should print clean version when git repo is clean") {
             // Arrange
             val repo = createEmptyRepository(::gitRepoBuilder)
@@ -83,14 +111,12 @@ class GitoniumPluginTests: FunSpec({
             // Act
             val result = GradleRunner.create()
                 .withProjectDir(repo.directory)
-                .withArguments(":printVersion")
+                .withArguments(":printVersion", "--quiet")
                 .withPluginClasspath()
                 .build()
 
             // Assert
-            val versionStr = result.output.normaliseLineSeparators()
-                .substringAfter("> Task :printVersion\n").substringBefore('\n')
-            versionStr shouldBe "1.2.3"
+            result.output.trim() shouldBe "1.2.3"
         }
 
         test("should print snapshot version when git repo is clean but gitonium.isSnapshot is set") {
@@ -119,14 +145,12 @@ class GitoniumPluginTests: FunSpec({
             // Act
             val result = GradleRunner.create()
                 .withProjectDir(repo.directory)
-                .withArguments(":printVersion", "-Pgitonium.isSnapshot=true")
+                .withArguments(":printVersion", "--quiet", "-Pgitonium.isSnapshot=true")
                 .withPluginClasspath()
                 .build()
 
             // Assert
-            val versionStr = result.output.normaliseLineSeparators()
-                .substringAfter("> Task :printVersion\n").substringBefore('\n')
-            versionStr shouldBe "1.2.3-SNAPSHOT"
+            result.output.trim() shouldBe "1.2.3-SNAPSHOT"
         }
 
         test("should print dirty version when git repo has changed files") {
@@ -154,14 +178,12 @@ class GitoniumPluginTests: FunSpec({
             // Act
             val result = GradleRunner.create()
                 .withProjectDir(repo.directory)
-                .withArguments(":printVersion")
+                .withArguments(":printVersion", "--quiet")
                 .withPluginClasspath()
                 .build()
 
             // Assert
-            val versionStr = result.output.normaliseLineSeparators()
-                .substringAfter("> Task :printVersion\n").substringBefore('\n')
-            versionStr shouldBe "1.2.3+dirty"
+            result.output.trim() shouldBe "1.2.3+dirty"
         }
 
         test("should print snapshot version when git repo has had a commit since the tag") {
@@ -191,14 +213,12 @@ class GitoniumPluginTests: FunSpec({
             // Act
             val result = GradleRunner.create()
                 .withProjectDir(repo.directory)
-                .withArguments(":printVersion")
+                .withArguments(":printVersion", "--quiet")
                 .withPluginClasspath()
                 .build()
 
             // Assert
-            val versionStr = result.output.normaliseLineSeparators()
-                .substringAfter("> Task :printVersion\n").substringBefore('\n')
-            versionStr shouldBe "1.2.4-SNAPSHOT"
+            result.output.trim() shouldBe "1.2.4-SNAPSHOT"
         }
 
         test("should print snapshot and dirty version when git repo has had changes and a commit since the tag") {
@@ -230,14 +250,12 @@ class GitoniumPluginTests: FunSpec({
             // Act
             val result = GradleRunner.create()
                 .withProjectDir(repo.directory)
-                .withArguments(":printVersion")
+                .withArguments(":printVersion", "--quiet")
                 .withPluginClasspath()
                 .build()
 
             // Assert
-            val versionStr = result.output.normaliseLineSeparators()
-                .substringAfter("> Task :printVersion\n").substringBefore('\n')
-            versionStr shouldBe "1.2.4-SNAPSHOT+dirty"
+            result.output.trim() shouldBe "1.2.4-SNAPSHOT+dirty"
         }
     }
 

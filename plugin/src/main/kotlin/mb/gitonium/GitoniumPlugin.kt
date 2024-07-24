@@ -130,7 +130,7 @@ class GitoniumPlugin : Plugin<Project> {
                 propertiesFile.writer().use { w ->
                     val p = Properties()
                     with(extension.versionInfo) {
-                        versionString?.let { p["version"] = it }
+                        p["version"] = versionString
                         releaseVersionString?.let { p["release-version"] = it }
                         commit?.let { p["commit"] = it }
                         p["build-time"] = buildDateTimeStr

@@ -95,12 +95,7 @@ open class GitoniumExtension @Inject constructor(
      * and `-SNAPSHOT` as the suffix (e.g., `"1.0.1-develop-SNAPSHOT"`).
      * If the repository is dirty, the version is suffixed with `+dirty` (e.g., `"1.0.1-SNAPSHOT+dirty"`).
      */
-    val version: String by lazy {
-        versionInfo.versionString ?: run {
-            LOG.warn("Gitonium could not determine version from Git repository, using default version.")
-            Project.DEFAULT_VERSION
-        }
-    }
+    val version: String get() = versionInfo.versionString
 
     /** Whether the current commit has a release version tag. */
     val isRelease: Boolean get() = versionInfo.isRelease
