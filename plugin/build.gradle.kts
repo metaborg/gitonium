@@ -5,6 +5,7 @@ plugins {
     `java-library`
     id("org.metaborg.gitonium") version "1.7.0"   // Bootstrap with a previous version
     id("org.metaborg.convention.java")
+    id("org.metaborg.convention.junit")
     id("org.metaborg.convention.maven-publish")
     `kotlin-dsl`
     `java-gradle-plugin`
