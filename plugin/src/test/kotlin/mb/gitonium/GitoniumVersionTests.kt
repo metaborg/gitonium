@@ -4,26 +4,24 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.engine.spec.tempdir
 import io.kotest.matchers.shouldBe
 import io.kotest.assertions.assertSoftly
-import io.kotest.assertions.throwables.shouldThrow
-import mb.gitonium.git.GitTestUtils.commitAll
-import mb.gitonium.git.GitTestUtils.commitFile
-import mb.gitonium.git.GitTestUtils.copyTestGitConfig
-import mb.gitonium.git.GitTestUtils.createEmptyRepository
-import mb.gitonium.git.NativeGitRepo
 import org.gradle.api.Project
+import org.metaborg.git.GitRepo
+import org.metaborg.git.GitTestUtils.commitFile
+import org.metaborg.git.GitTestUtils.copyTestGitConfig
+import org.metaborg.git.GitTestUtils.createEmptyRepository
+import org.metaborg.git.NativeGit
 import java.io.File
-import java.io.IOException
 
 /** Tests the [GitoniumVersion] class. */
 class GitoniumVersionTests: FunSpec({
 
     val gitConfigPath: File = copyTestGitConfig()
 
-    fun buildGitRepo(directory: File): NativeGitRepo {
-        return NativeGitRepo(directory, environment = mapOf(
+    fun buildGitRepo(directory: File): GitRepo {
+        return NativeGit().open(directory,
             // Override the git configuration (Git >= 2.32.0)
-            "GIT_CONFIG_GLOBAL" to gitConfigPath.absolutePath,
-        ))
+            globalConfig = gitConfigPath,
+        )
     }
 
     context("determineVersion()") {

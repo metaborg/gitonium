@@ -4,14 +4,13 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.engine.spec.tempdir
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
-import mb.gitonium.git.GitTestUtils.copyTestGitConfig
-import mb.gitonium.git.GitTestUtils.createEmptyRepository
-import mb.gitonium.git.GitTestUtils.writeFile
-import mb.gitonium.git.NativeGitRepo
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.support.normaliseLineSeparators
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
+import org.metaborg.git.GitTestUtils.copyTestGitConfig
+import org.metaborg.git.GitTestUtils.createEmptyRepository
+import org.metaborg.git.GitTestUtils.writeFile
+import org.metaborg.git.NativeGit
 import java.io.File
 
 /** Tests the [GitoniumPlugin]. */
@@ -19,10 +18,10 @@ class GitoniumPluginTests: FunSpec({
 
     val gitConfigPath: File = copyTestGitConfig()
 
-    fun gitRepoBuilder(dir: File) = NativeGitRepo(dir, environment = mapOf(
+    fun gitRepoBuilder(dir: File) = NativeGit().open(dir,
         // Override the git configuration (Git >= 2.32.0)
-        "GIT_CONFIG_GLOBAL" to gitConfigPath.absolutePath,
-    ))
+        globalConfig = gitConfigPath
+    )
 
     context("task :tasks") {
         test("should print the Gitonium tasks") {

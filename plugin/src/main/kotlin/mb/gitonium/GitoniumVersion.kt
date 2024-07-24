@@ -1,9 +1,9 @@
 package mb.gitonium
 
-import mb.gitonium.git.CommandException
-import mb.gitonium.git.GitRepo
-import mb.gitonium.git.NativeGitRepo
 import org.gradle.api.Project
+import org.metaborg.git.CommandException
+import org.metaborg.git.GitRepo
+import org.metaborg.git.NativeGit
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -130,16 +130,16 @@ data class GitoniumVersion(
          * @throws IOException If an I/O error occurs, or if Git is not available.
          */
         private fun getGitRepo(repoDirectory: File): GitRepo? {
-            val repo = NativeGitRepo(repoDirectory)
-
             // Ensure Git is available
+            val git = NativeGit()
             try {
-                repo.getGitVersion() ?: throw IOException("Git is not available.")
+                git.getGitVersion() ?: throw IOException("Git is not available.")
             } catch (e: IOException) {
                 throw IOException("Git is not available.", e)
             }
 
             // Ensure the directory exists and is a Git repository
+            val repo = git.open(repoDirectory)
             try {
                 repo.getStatus()
             } catch (e: CommandException) {

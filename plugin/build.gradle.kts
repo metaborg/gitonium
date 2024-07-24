@@ -14,10 +14,14 @@ plugins {
 description = "A Git-based versioning plugin for Gradle."
 
 dependencies {
-    testImplementation  (libs.kotest)
-    testImplementation  (libs.kotest.assertions)
-    testImplementation  (libs.kotest.datatest)
-    testImplementation  (libs.kotest.property)
+    implementation(platform(libs.metaborg.platform))
+
+    implementation(libs.metaborg.git)
+    implementation(testFixtures(libs.metaborg.git))
+    testImplementation(libs.kotest)
+    testImplementation(libs.kotest.assertions)
+    testImplementation(libs.kotest.datatest)
+    testImplementation(libs.kotest.property)
 }
 
 gradlePlugin {

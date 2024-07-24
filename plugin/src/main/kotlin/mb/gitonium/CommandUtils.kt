@@ -1,6 +1,6 @@
 package mb.gitonium
 
-import mb.gitonium.git.CommandException
+import org.metaborg.git.CommandException
 import java.io.File
 import java.io.IOException
 import kotlin.jvm.Throws
