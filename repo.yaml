@@ -1,0 +1,34 @@
+---
+repoOwner: "metaborg"
+repoName: "gitonium"
+mainBranch: "master"
+
+title: "Gitonium"
+description: |
+  Gitonium is a Gradle plugin for automatic versioning based on the current Git branch and/or tag.
+inceptionYear: "2018"
+
+plugins:
+  - id: "org.metaborg.gitonium"
+    description: "Gitonium plugin"
+
+developers:
+  - id: "Gohla"
+    name: "Gabriel Konat"
+  - id: "Virtlink"
+    name: "Daniel A. A. Pelsmaeker"
+
+files:
+  githubWorkflows:
+    publishRelease: true
+    publishSnapshot: true
+    buildDocs: true
+    publishTask: ":plugin:publish"
+    printVersionTask: ":plugin:printVersion"
+  gradleRootProject:
+    createPublishTasks: true
+    rootProjectName: "esv-project"
+    includedBuilds:
+      - path: "plugin/"
+      - path: "example/"
+
