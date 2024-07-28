@@ -1,5 +1,5 @@
 import org.metaborg.convention.MavenPublishConventionExtension
-import org.metaborg.convention.Developer
+import org.metaborg.convention.Person
 
 plugins {
     `java-library`
@@ -54,8 +54,8 @@ allprojects {
             metadata {
                 inceptionYear.set("2019")
                 developers.set(listOf(
-                    Developer("Virtlink", "Daniel A. A. Pelsmaeker", "developer@pelsmaeker.net"),
-                    Developer("Gohla", "Gabriel Konat", "gabrielkonat@gmail.com"),
+                    Person("Virtlink", "Daniel A. A. Pelsmaeker", "developer@pelsmaeker.net"),
+                    Person("Gohla", "Gabriel Konat", "gabrielkonat@gmail.com"),
                 ))
             }
         }
