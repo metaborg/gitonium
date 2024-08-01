@@ -1,4 +1,8 @@
 ---
+# !! THIS FILE WAS GENERATED USING repoman !!
+# Modify `repo.yaml` instead and use `repoman` to update this file
+# See: https://github.com/metaborg/metaborg-gradle/
+
 name: 'Documentation'
 
 on:  # yamllint disable-line rule:truthy

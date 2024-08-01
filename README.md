@@ -1,3 +1,9 @@
+<!--
+!! THIS FILE WAS GENERATED USING repoman !!
+Modify `repo.yaml` instead and use `repoman` to update this file
+See: https://github.com/metaborg/metaborg-gradle/
+-->
+
 # Gitonium
 [![Build][github-badge:build]][github:build]
 [![License][license-badge]][license]
@@ -6,11 +12,18 @@
 
 Gitonium is a Gradle plugin for automatic versioning based on the current Git branch and/or tag.
 
+
 [![Documentation][documentation-button]][documentation]
 
-| Gradle Plugin                                                      | Latest Release                                    | Latest Snapshot                                     |
-|--------------------------------------------------------------------|---------------------------------------------------|-----------------------------------------------------|
-| `org.metaborg.gitonium` | [![Release][mvn-rel-badge:gitonium.gradle.plugin]][mvn:gitonium.gradle.plugin] | [![Snapshot][mvn-snap-badge:gitonium.gradle.plugin]][mvn:gitonium.gradle.plugin] |
+## Spoofax 3 Artifacts
+
+
+
+| Gradle Plugin | Latest Release | Latest Snapshot |
+|---------------|----------------|-----------------|
+| `org.metaborg.gitonium` | [![Release][mvn-rel-badge:org.metaborg.gitonium:org.metaborg.gitonium.gradle.plugin]][mvn:org.metaborg.gitonium:org.metaborg.gitonium.gradle.plugin] | [![Snapshot][mvn-snap-badge:org.metaborg.gitonium:org.metaborg.gitonium.gradle.plugin]][mvn:org.metaborg.gitonium:org.metaborg.gitonium.gradle.plugin] |
+
+
 
 ## Requirements
 Gradle 7 or higher is required. The code snippets in this README assume you are using Gradle with Kotlin, but should be translatable to Groovy as well.
@@ -64,7 +77,6 @@ If the repository has no HEAD, Gitonium will fail.
 >  ```
 
 
-
 ## License
 Copyright 2018-2024 [Programming Languages Group](https://pl.ewi.tudelft.nl/), [Delft University of Technology](https://www.tudelft.nl/)
 
@@ -72,17 +84,15 @@ Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an **"as is" basis, without warranties or conditions of any kind**, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-
 [github-badge:build]: https://img.shields.io/github/actions/workflow/status/metaborg/gitonium/build.yaml
 [github:build]: https://github.com/metaborg/gitonium/actions
 [license-badge]: https://img.shields.io/github/license/metaborg/gitonium
-[license]: https://github.com/metaborg/gitonium/blob/master/LICENSE
+[license]: https://github.com/metaborg/gitonium/blob/master/LICENSE.md
 [github-badge:release]: https://img.shields.io/github/v/release/metaborg/gitonium?display_name=release
 [github:release]: https://github.com/metaborg/gitonium/releases
 [documentation-badge]: https://img.shields.io/badge/docs-latest-brightgreen
 [documentation]: https://spoofax.dev/gitonium/
 [documentation-button]: https://img.shields.io/badge/Documentation-blue?style=for-the-badge&logo=googledocs&logoColor=white
-
-[mvn-rel-badge:gitonium.gradle.plugin]: https://img.shields.io/nexus/r/org.metaborg.gitonium/org.metaborg.gitonium.gradle.plugin?server=https%3A%2F%2Fartifacts.metaborg.org&label=%20
-[mvn-snap-badge:gitonium.gradle.plugin]: https://img.shields.io/nexus/s/org.metaborg.gitonium/org.metaborg.gitonium.gradle.plugin?server=https%3A%2F%2Fartifacts.metaborg.org&label=%20
-[mvn:gitonium.gradle.plugin]: https://artifacts.metaborg.org/#nexus-search;gav~org.metaborg.gitonium~org.metaborg.gitonium.gradle.plugin~~~
+[mvn:org.metaborg.gitonium:org.metaborg.gitonium.gradle.plugin]: https://artifacts.metaborg.org/#nexus-search;gav~org.metaborg.gitonium~org.metaborg.gitonium.gradle.plugin~~~
+[mvn-rel-badge:org.metaborg.gitonium:org.metaborg.gitonium.gradle.plugin]: https://img.shields.io/nexus/r/org.metaborg.gitonium/org.metaborg.gitonium.gradle.plugin?server=https%3A%2F%2Fartifacts.metaborg.org&label=%20
+[mvn-snap-badge:org.metaborg.gitonium:org.metaborg.gitonium.gradle.plugin]: https://img.shields.io/nexus/s/org.metaborg.gitonium/org.metaborg.gitonium.gradle.plugin?server=https%3A%2F%2Fartifacts.metaborg.org&label=%20

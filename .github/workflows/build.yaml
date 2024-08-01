@@ -1,4 +1,8 @@
 ---
+# !! THIS FILE WAS GENERATED USING repoman !!
+# Modify `repo.yaml` instead and use `repoman` to update this file
+# See: https://github.com/metaborg/metaborg-gradle/
+
 name: 'Build & Publish'
 
 on:  # yamllint disable-line rule:truthy
@@ -10,6 +14,10 @@ on:  # yamllint disable-line rule:truthy
 jobs:
   build:
     uses: metaborg/actions/.github/workflows/gradle-build-matrix.yaml@main
+    with:
+      gradle-command: |
+        gradle build
+  # Publish snapshots
   publish-snapshot:
     uses: metaborg/actions/.github/workflows/gradle-publish.yaml@main
     with:
@@ -22,6 +30,7 @@ jobs:
     secrets:
       METABORG_ARTIFACTS_USERNAME: ${{ secrets.METABORG_ARTIFACTS_USERNAME }}
       METABORG_ARTIFACTS_PASSWORD: ${{ secrets.METABORG_ARTIFACTS_PASSWORD }}
+  # Publish releases
   publish-release:
     uses: metaborg/actions/.github/workflows/gradle-publish.yaml@main
     with:
