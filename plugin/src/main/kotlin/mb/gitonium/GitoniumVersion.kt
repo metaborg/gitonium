@@ -179,7 +179,7 @@ data class GitoniumVersion(
                 try {
                     getCurrentVersion(tagPrefix, firstParentOnly, commit = "HEAD~")
                 } catch (ex: CommandException) {
-                    if (ex.exitCode == 128 && "Not a valid object name" in ex.stderr) {
+                    if (ex.exitCode == 128 && ex.stderr.lowercase().contains("not a valid object name")) {
                         // The previous commit does not exist, so we still use the current commit.
                         Pair(currentTagVersion, currentTagIsSnapshot)
                     } else {
